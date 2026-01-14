@@ -1,0 +1,9 @@
+[build]
+  command = "pnpm run build"
+  publish = "build"
+
+[dev]
+  command = "pnpm run dev"
+
+[functions]
+  node_bundler = "esbuild" # Hace que las funciones serverless sean más rápidas
