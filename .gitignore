@@ -67,3 +67,4 @@ vite.config.ts.timestamp-*
 
 # Optional: Keep if you don't want to version project rules
 # project-rules.md
+/../generated/prisma

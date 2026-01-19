@@ -1,0 +1,305 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// --------------------------------------
+// ENUMS
+// --------------------------------------
+
+enum Role {
+  ADMIN
+  CLIENT
+  BUSINESS
+}
+
+enum Plan {
+  NONE
+  BASIC
+  PYME
+  CORP
+}
+
+enum TicketStatus {
+  PENDING
+  DIAGNOSIS
+  WAITING_PARTS
+  REPAIRING
+  READY
+  DELIVERED
+}
+
+enum MaintenanceFreq {
+  NONE
+  BIANNUAL
+  QUARTERLY
+  MONTHLY
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  COMPLETED
+  MISSED
+  CANCELLED
+}
+
+enum TransactionType {
+  DEPOSIT
+  USAGE
+  REFUND
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// --------------------------------------
+// USUARIOS Y GESTIÓN
+// --------------------------------------
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  role      Role     @default(CLIENT)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // --- Datos B2B ---
+  plan        Plan    @default(NONE)
+  companyName String? @map("company_name")
+
+  // --- Wallet & Mantenimiento ---
+  // Usamos Decimal(10,2) para manejar hasta 99,999,999.99
+  repairCredit        Decimal         @default(0.00) @db.Decimal(10, 2) @map("repair_credit")
+  maintenanceFreq     MaintenanceFreq @default(NONE) @map("maintenance_freq")
+  nextMaintenanceDate DateTime?       @map("next_maintenance_date")
+
+  // --- Relaciones ---
+  devices      Device[]
+  tickets      Ticket[]
+  orders       Order[]
+  transactions CreditTransaction[]
+  addresses    Address[]
+  cart         Cart? // Relación 1 a 1 (Un carrito por usuario)
+
+  // Mantenimientos (Diferenciando Cliente vs Técnico)
+  clientVisits     MaintenanceVisit[] @relation("ClientVisits")
+  technicianVisits MaintenanceVisit[] @relation("TechnicianVisits")
+
+  @@map("users")
+}
+
+model CreditTransaction {
+  id          String          @id @default(uuid())
+  userId      String          @map("user_id")
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount      Decimal         @db.Decimal(10, 2)
+  type        TransactionType
+  description String?
+  referenceId String?         @map("reference_id") // ID del Ticket u Orden
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  @@map("credit_transactions")
+}
+
+model MaintenanceVisit {
+  id           String            @id @default(uuid())
+  userId       String            @map("user_id")
+  client       User              @relation("ClientVisits", fields: [userId], references: [id], onDelete: Cascade)
+  technicianId String?           @map("technician_id")
+  technician   User?             @relation("TechnicianVisits", fields: [technicianId], references: [id])
+
+  scheduledDate DateTime          @map("scheduled_date")
+  completedDate DateTime?         @map("completed_date")
+  status        MaintenanceStatus @default(SCHEDULED)
+  report        String?           @db.Text
+
+  @@map("maintenance_visits")
+}
+
+model Address {
+  id        String  @id @default(uuid())
+  userId    String  @map("user_id")
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  street    String
+  city      String
+  state     String
+  zipCode   String  @map("zip_code")
+  country   String  @default("Venezuela")
+  isDefault Boolean @default(false) @map("is_default")
+
+  orders Order[]
+
+  @@map("addresses")
+}
+
+// --------------------------------------
+// ECOMMERCE: CATÁLOGO
+// --------------------------------------
+
+model Category {
+  id       String  @id @default(uuid())
+  name     String
+  slug     String  @unique
+  imageUrl String? @map("image_url")
+
+  // Auto-relación para subcategorías (Árbol)
+  parentId String?    @map("parent_id")
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  categoryId  String?  @map("category_id")
+  category    Category? @relation(fields: [categoryId], references: [id])
+  
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  price           Decimal  @db.Decimal(10, 2) // PRECIO FINAL DE VENTA (Ej: 80.00)
+  compareAtPrice  Decimal? @db.Decimal(10, 2) @map("compare_at_price") 
+  // Si esto tiene valor (Ej: 100.00), el frontend muestra: "$100" tachado y "$80" grande.
+  // Si es null, es un producto a precio normal.
+  stock       Int
+  imageUrl    String?  @map("image_url")
+  isVisible   Boolean  @default(true) @map("is_visible")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relaciones
+  images      ProductImage[]
+  ticketParts TicketPart[] // Inventario compartido con taller
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  altText   String? @map("alt_text")
+
+  @@map("product_images")
+}
+
+// --------------------------------------
+// ECOMMERCE: CARRITO Y ORDENES
+// --------------------------------------
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique @map("user_id") // @unique hace la relación 1-1
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  items     CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String  @id @default(uuid())
+  cartId    String  @map("cart_id")
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+
+  @@map("cart_items")
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  userId            String      @map("user_id")
+  user              User        @relation(fields: [userId], references: [id])
+  shippingAddressId String?     @map("shipping_address_id") // Opcional por si se borra la dir
+  shippingAddress   Address?    @relation(fields: [shippingAddressId], references: [id])
+
+  total            Decimal     @db.Decimal(10, 2)
+  status           OrderStatus @default(PENDING_PAYMENT)
+  paymentReference String?     @map("payment_reference")
+  createdAt        DateTime    @default(now()) @map("created_at")
+
+  items OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  @map("order_id")
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2) // Precio congelado al momento de compra
+
+  @@map("order_items")
+}
+
+// --------------------------------------
+// SISTEMA DE REPARACIONES (TICKETING)
+// --------------------------------------
+
+model Device {
+  id        String   @id @default(uuid())
+  name      String
+  specs     String?
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tickets   Ticket[]
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("devices")
+}
+
+model Ticket {
+  id             String       @id @default(uuid())
+  code           String       @unique @default(cuid())
+  
+  userId         String?      @map("user_id")
+  user           User?        @relation(fields: [userId], references: [id])
+  deviceId       String?      @map("device_id")
+  device         Device?      @relation(fields: [deviceId], references: [id])
+  
+  problem        String       @db.Text
+  status         TicketStatus @default(PENDING)
+  notes          String?      @db.Text
+  
+  // Finanzas del Ticket
+  totalCost      Decimal?     @db.Decimal(10, 2) @map("total_cost")
+  isPaidByCredit Boolean      @default(false) @map("is_paid_by_credit")
+  
+  partsUsed      TicketPart[]
+  
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@map("tickets")
+}
+
+model TicketPart {
+  id        String  @id @default(uuid())
+  ticketId  String  @map("ticket_id")
+  ticket    Ticket  @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+
+  @@map("ticket_parts")
+}
