@@ -3,10 +3,6 @@
   themes: light --default, dark --prefersdark;
 }
 
-
-
-
-
 @plugin "daisyui/theme" {
   name: "maintree";
   default: false;
@@ -66,9 +62,6 @@
   --color-warning-content: oklch(28% 0.066 53.813);
   --color-error: oklch(71% 0.202 349.761);
   --color-error-content: oklch(28% 0.109 3.907);
-  --radius-selector: 2rem;
-  --radius-field: 0rem;
-  --radius-box: 2rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1.5px;
