@@ -1,11 +1,11 @@
 <script lang="ts">
   import "../app.css";
   import { Cpu, Gpu, HardDrive, Mouse, Search } from "lucide-svelte";
-  import heroVideo from "$lib/assets/home/loop.mov";
-  import cpuImage from "$lib/assets/home/CPU.png";
-  import gpuImage from "$lib/assets/home/GPU.png";
-  import perifericoImage from "$lib/assets/home/periferico.png";
-  import almacenamientoImage from "$lib/assets/home/almacenamiento.png";
+  import heroVideo from "$lib/assets/home/loop.webm";
+  import cpuImage from "$lib/assets/home/CPU.webp";
+  import gpuImage from "$lib/assets/home/GPU.webp";
+  import perifericoImage from "$lib/assets/home/periferico.webp";
+  import almacenamientoImage from "$lib/assets/home/almacenamiento.webp";
   import B2BImage from "$lib/assets/home/B2B.webp";
   import { onMount } from "svelte";
 
@@ -42,7 +42,7 @@
 
 <div class="flex flex-col gap-16 md:gap-24">
   <!-- Hero Section -->
-  <div class="hero relative min-h-[75vh] overflow-hidden">
+  <div class="hero relative min-h-screen overflow-hidden">
     <video
       class="absolute inset-0 h-full w-full object-cover opacity-20 md:opacity-40"
       autoplay
