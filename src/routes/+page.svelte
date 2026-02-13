@@ -8,6 +8,7 @@
   import almacenamientoImage from "$lib/assets/home/almacenamiento.webp";
   import B2BImage from "$lib/assets/home/B2B.webp";
   import { onMount } from "svelte";
+  import CategoryCard from "$lib/components/CategoryCard.svelte";
 
   let buscadorSection: HTMLElement;
 
@@ -27,7 +28,7 @@
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     ); // Se activa cuando se ve el 10% del elemento
 
     observer.observe(node);
@@ -115,91 +116,29 @@
     </h2>
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <!-- Procesadores -->
-      <div
-        class="card card-compact border-2 border-transparent bg-base-100 shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary hover:shadow-2xl"
-      >
-        <figure
-          class="relative w-full aspect-square bg-white overflow-hidden rounded-t-xl flex items-center justify-center p-4"
-        >
-          <img
-            src={cpuImage}
-            alt="Procesadores"
-            class="w-full h-full object-contain transition-transform duration-500 hover:scale-110"
-          />
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">
-            <Cpu class="h-6 w-6" />
-            Procesadores
-          </h3>
-          <p>El cerebro de tu máquina, a la máxima potencia.</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary btn-sm">Ver más</button>
-          </div>
-        </div>
-      </div>
+      <CategoryCard
+        image={cpuImage}
+        title="Procesadores"
+        description="Potencia de cálculo bruta para multitarea y gaming."
+      />
       <!-- Gráficas -->
-      <div
-        class="card card-compact border-2 border-transparent bg-base-100 shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary hover:shadow-2xl"
-      >
-        <figure
-          class="relative w-full aspect-square bg-white overflow-hidden rounded-t-xl flex items-center justify-center p-4"
-        >
-          <img src={gpuImage} alt="Tarjetas Gráficas" />
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">
-            <Gpu class="h-6 w-6" />
-            Tarjetas Gráficas
-          </h3>
-          <p>Visuales impresionantes para tus juegos y proyectos.</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary btn-sm">Ver más</button>
-          </div>
-        </div>
-      </div>
+      <CategoryCard
+        image={gpuImage}
+        title="Tarjetas Gráficas"
+        description="Rendimiento visual de última generación para juegos y diseño."
+      />
       <!-- Periféricos -->
-      <div
-        class="card card-compact border-2 border-transparent bg-base-100 shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary hover:shadow-2xl"
-      >
-        <figure class="relative w-full aspect-square bg-white overflow-hidden rounded-t-xl flex items-center justify-center p-4">
-          <img
-            src={perifericoImage}
-            alt="Periféricos"
-          />
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">
-            <Mouse class="h-6 w-6" />
-            Periféricos
-          </h3>
-          <p>Precisión y comodidad para dominar cada partida.</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary btn-sm">Ver más</button>
-          </div>
-        </div>
-      </div>
+      <CategoryCard
+        image={perifericoImage}
+        title="Periféricos"
+        description="Teclados, mouses y accesorios para completar tu setup ideal."
+      />
       <!-- Almacenamiento -->
-      <div
-        class="card card-compact border-2 border-transparent bg-base-100 shadow-xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-primary hover:shadow-2xl"
-      >
-        <figure class="relative w-full aspect-square bg-white overflow-hidden rounded-t-xl flex items-center justify-center p-4">
-          <img
-            src={almacenamientoImage}
-            alt="Almacenamiento"
-          />
-        </figure>
-        <div class="card-body">
-          <h3 class="card-title">
-            <HardDrive class="h-6 w-6" />
-            Almacenamiento
-          </h3>
-          <p>Velocidad de carga ultrarrápida para tus juegos y archivos.</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary btn-sm">Ver más</button>
-          </div>
-        </div>
-      </div>
+      <CategoryCard
+        image={almacenamientoImage}
+        title="Almacenamiento"
+        description="Discos SSD, NVMe y HDD para que nunca te quedes sin espacio."
+      />
     </div>
   </div>
 
