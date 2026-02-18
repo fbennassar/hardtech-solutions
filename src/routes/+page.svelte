@@ -7,7 +7,6 @@
   import perifericoImage from "$lib/assets/home/periferico.webp";
   import almacenamientoImage from "$lib/assets/home/almacenamiento.webp";
   import B2BImage from "$lib/assets/home/B2B.webp";
-  import { onMount } from "svelte";
   import CategoryCard from "$lib/components/CategoryCard.svelte";
 
   let buscadorSection: HTMLElement;
