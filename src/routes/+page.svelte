@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../app.css";
-  import { Cpu, Gpu, HardDrive, Mouse, Search } from "lucide-svelte";
+  import { Search } from "lucide-svelte";
   import heroVideo from "$lib/assets/home/loop.webm";
   import cpuImage from "$lib/assets/home/CPU.webp";
   import gpuImage from "$lib/assets/home/GPU.webp";

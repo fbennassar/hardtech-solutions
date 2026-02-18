@@ -75,7 +75,7 @@ export const actions: Actions = {
 				// se debería manejar este caso, por ejemplo, eliminando al usuario recién creado
 				// o usando una función de base de datos para una operación atómica (transacción).
 				console.error('Error creating company profile:', companyError);
-				return fail(500, { error: 'Se creó el usuario, pero hubo un error al crear el perfil de empresa.', email });
+				return fail(500, { error: 'Se creó el usuario, pero hubo un error al crear el perfil de empresa.', email, fullName, phone, accountType, businessName, businessAddress, rif });
 			}
 		}
 
