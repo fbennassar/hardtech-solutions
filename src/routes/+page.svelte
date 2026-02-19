@@ -64,7 +64,7 @@
           de la ciudad.
         </p>
         <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <button class="btn btn-primary">Ver Catálogo</button>
+          <button class="btn btn-success">Ver Catálogo</button>
           <button
             class="btn btn-secondary btn-outline"
             on:click={scrollToBuscador}
@@ -101,7 +101,7 @@
             <Search class="h-5 w-5 text-base-content/50" />
           </div>
         </div>
-        <button class="btn btn-primary join-item hover:scale-105"
+        <button class="btn btn-success join-item hover:scale-105"
           >Rastrear</button
         >
       </div>
@@ -262,17 +262,17 @@
       <!-- Card Oferta 1 -->
       <div
         use:reveal
-        class="reveal-hidden card image-full bg-gradient-to-br from-primary to-secondary text-primary-content shadow-xl"
+        class="reveal-hidden card image-full bg-gradient-to-br from-primary to-accent text-primary-content shadow-xl"
       >
         <div class="card-body items-center justify-center text-center">
-          <h3 class="card-title text-3xl font-bold">¡Atención Estudiantes!</h3>
-          <p class="text-lg">
+          <h3 class="card-title text-3xl font-bold ">¡Atención Estudiantes!</h3>
+          <p class="text-lg ">
             15% de descuento en servicios de reparación presentando tu
             credencial.
           </p>
           <div class="card-actions mt-4">
             <button
-              class="btn btn-outline border-white text-white hover:bg-white hover:text-primary"
+              class="btn btn-outline border-white text-white hover:bg-white hover:text-accent"
               >Saber más</button
             >
           </div>
@@ -379,7 +379,7 @@
         </a>
       </div>
       <div class="mt-8">
-        <button class="btn btn-primary btn-lg">Solicitar Cotización</button>
+        <button class="btn btn-success btn-lg">Solicitar Cotización</button>
       </div>
     </div>
   </div>
