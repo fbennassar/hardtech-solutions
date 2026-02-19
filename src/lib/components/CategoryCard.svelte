@@ -28,7 +28,7 @@
     </h3>
     <p>{description}</p>
     <div class="card-actions justify-end">
-      <button class="btn btn-primary btn-sm">Ver más</button>
+      <button class="btn btn-success btn-sm">Ver más</button>
     </div>
   </div>
 </div>
