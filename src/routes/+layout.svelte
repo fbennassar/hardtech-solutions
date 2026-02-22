@@ -154,7 +154,7 @@
               >
             {/if}
             {#if !isRegisterPage}
-              <a href="/auth/registro" class="btn btn-primary btn-sm sm:btn-md"
+              <a href="/auth/registro" class="btn btn-success btn-sm sm:btn-md"
                 >Registrarse</a
               >
             {/if}

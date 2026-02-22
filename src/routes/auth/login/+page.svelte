@@ -66,7 +66,7 @@
 	</div>
 
 	<div class="form-control mt-6">
-		<button class="btn btn-primary" disabled={loading}>
+		<button class="btn btn-success" disabled={loading}>
 			{#if loading}
 				<span class="loading loading-spinner"></span>
 			{/if}
