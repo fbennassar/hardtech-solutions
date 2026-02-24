@@ -46,10 +46,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
       <!-- Left side (Video) -->
       <div
-        class="w-full aspect-square md:aspect-4/5 lg:aspect-square relative rounded-4xl overflow-hidden bg-base-300 shadow-xl border border-base-200"
+        class="hidden md:block w-full aspect-square md:aspect-4/5 lg:aspect-square relative rounded-4xl overflow-hidden bg-base-300 shadow-xl border border-base-200"
       >
         <video
-          class="absolute inset-0 h-full w-full object-cover"
+          class="absolute inset-0 h-full w-full object-cover scale-110"
           autoplay
           loop
           muted
