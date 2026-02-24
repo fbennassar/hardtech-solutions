@@ -110,7 +110,7 @@
                   <span class="text-lg font-bold">8 Productos</span>
                   <span class="text-primary">Subtotal: $67</span>
                   <div class="card-actions">
-                    <button class="btn btn-primary btn-block"
+                    <button class="btn btn-success btn-block"
                       >Ver carrito</button
                     >
                   </div>

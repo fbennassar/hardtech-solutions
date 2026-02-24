@@ -42,35 +42,73 @@
 
 <div class="flex flex-col gap-16 md:gap-24">
   <!-- Hero Section -->
-  <div class="hero relative min-h-screen overflow-hidden">
-    <video
-      class="absolute inset-0 h-full w-full object-cover opacity-20 md:opacity-40"
-      autoplay
-      loop
-      muted
-      playsinline
-    >
-      <source src={heroVideo} type="video/mp4" />
-    </video>
-    <div class="hero-overlay bg-black bg-opacity-60"></div>
-    <div class="hero-content text-center text-neutral-content">
-      <div class="max-w-2xl">
-        <h1 class="text-4xl font-bold sm:text-6xl">
-          Potencia tu <span class="text-primary">Setup</span>, Repara tu
-          <span class="text-primary">Equipo</span>
+  <div class="container mx-auto px-4 pt-12 md:pt-20 pb-8 md:pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <!-- Left side (Video) -->
+      <div
+        class="w-full aspect-square md:aspect-4/5 lg:aspect-square relative rounded-4xl overflow-hidden bg-base-300 shadow-xl border border-base-200"
+      >
+        <video
+          class="absolute inset-0 h-full w-full object-cover"
+          autoplay
+          loop
+          muted
+          playsinline
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+        <!-- Soft gradient overlay to add depth without darkening too much -->
+        <div
+          class="absolute inset-0 bg-linear-to-tr from-base-200/40 to-transparent"
+        ></div>
+      </div>
+
+      <!-- Right side (Content) -->
+      <div class="flex flex-col gap-6 text-center md:text-left">
+        <h1
+          class="text-5xl lg:text-7xl font-extrabold text-base-content leading-tight"
+        >
+          Potencia tu <span class="text-primary">Setup</span>,<br />
+          Repara tu <span class="text-primary">Equipo</span>
         </h1>
-        <p class="py-6 text-lg">
+        <p class="text-lg text-base-content/70 max-w-lg md:mx-0 mx-auto">
           Los mejores componentes de PC y el servicio técnico más transparente
           de la ciudad.
         </p>
-        <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
+
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-2"
+        >
           <button class="btn btn-success">Ver Catálogo</button>
           <button
-            class="btn btn-secondary btn-outline"
+            class="btn btn-outline btn-success"
             on:click={scrollToBuscador}
           >
             Rastrear Reparación
           </button>
+        </div>
+
+        <div
+          class="flex gap-8 justify-center md:justify-start mt-4 pt-4 w-full"
+        >
+          <div class="flex flex-col">
+            <span class="text-3xl font-bold text-primary">500+</span>
+            <span class="text-sm text-base-content/60 font-medium"
+              >Productos</span
+            >
+          </div>
+          <div class="flex flex-col">
+            <span class="text-3xl font-bold text-primary">10K+</span>
+            <span class="text-sm text-base-content/60 font-medium"
+              >Clientes</span
+            >
+          </div>
+          <div class="flex flex-col">
+            <span class="text-3xl font-bold text-primary">99%</span>
+            <span class="text-sm text-base-content/60 font-medium"
+              >Satisfacción</span
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -180,7 +218,7 @@
         <div class="order-2 md:order-1">
           <ul class="flex flex-col gap-6">
             <li class="flex items-start gap-4">
-              <div class="mt-1 flex-shrink-0">
+              <div class="mt-1 shrink-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -206,7 +244,7 @@
               </div>
             </li>
             <li class="flex items-start gap-4">
-              <div class="mt-1 flex-shrink-0">
+              <div class="mt-1 shrink-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -262,11 +300,11 @@
       <!-- Card Oferta 1 -->
       <div
         use:reveal
-        class="reveal-hidden card image-full bg-gradient-to-br from-primary to-accent text-primary-content shadow-xl"
+        class="reveal-hidden card image-full bg-linear-to-br from-primary to-accent text-primary-content shadow-xl"
       >
         <div class="card-body items-center justify-center text-center">
-          <h3 class="card-title text-3xl font-bold ">¡Atención Estudiantes!</h3>
-          <p class="text-lg ">
+          <h3 class="card-title text-3xl font-bold">¡Atención Estudiantes!</h3>
+          <p class="text-lg">
             15% de descuento en servicios de reparación presentando tu
             credencial.
           </p>
@@ -281,7 +319,7 @@
       <!-- Card Oferta 2 -->
       <div
         use:reveal
-        class="reveal-hidden card image-full bg-gradient-to-tr from-accent to-primary text-primary-content shadow-xl"
+        class="reveal-hidden card image-full bg-linear-to-tr from-accent to-primary text-primary-content shadow-xl"
       >
         <div class="card-body items-center justify-center text-center">
           <h3 class="card-title text-3xl font-bold">
