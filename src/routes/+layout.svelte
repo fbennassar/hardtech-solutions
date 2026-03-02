@@ -26,7 +26,7 @@
 <div class="drawer">
   <input id="main-drawer" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col min-h-screen">
-    <div class="navbar bg-base-100 shadow-sm">
+    <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50">
       <div class="navbar-start">
         {#if !isAuthPage}
           <div class="flex-none lg:hidden">
