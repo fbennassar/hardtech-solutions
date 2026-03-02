@@ -52,7 +52,9 @@
         {/if}
         <a href="/" class="btn btn-ghost text-xl font-bold tracking-tight">
           <span class="sm:hidden">HT<span class="text-primary">S</span></span>
-          <span class="hidden sm:inline">HardTech <span class="text-primary">Solutions</span></span>
+          <span class="hidden sm:inline"
+            >HardTech <span class="text-primary">Solutions</span></span
+          >
         </a>
       </div>
       {#if !isAuthPage}
@@ -79,7 +81,6 @@
       {/if}
       <div class="navbar-end">
         <div class="flex-none gap-2">
-          
           {#if data.session}
             <div class="dropdown dropdown-end">
               <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -143,6 +144,20 @@
                 </li>
                 <!-- svelte-ignore a11y_missing_attribute -->
                 <li><a>Configuración</a></li>
+                {#if data.role === "admin"}
+                  <li>
+                    <a href="/admin" class="text-primary font-semibold"
+                      >Panel Admin</a
+                    >
+                  </li>
+                {/if}
+                {#if data.role === "tech"}
+                  <li>
+                    <a href="/tech" class="text-secondary font-semibold"
+                      >Panel Técnico</a
+                    >
+                  </li>
+                {/if}
                 <!-- svelte-ignore a11y_missing_attribute -->
                 <li><button onclick={logout}>Cerrar sesión</button></li>
               </ul>
@@ -249,6 +264,18 @@
       <li><a>Reparaciones y servicios</a></li>
       {#if data.session}
         <li><a href="/profile">Perfil</a></li>
+        {#if data.role === "admin"}
+          <li>
+            <a href="/admin" class="text-primary font-semibold">Panel Admin</a>
+          </li>
+        {/if}
+        {#if data.role === "tech"}
+          <li>
+            <a href="/tech" class="text-secondary font-semibold"
+              >Panel Técnico</a
+            >
+          </li>
+        {/if}
         <li><button onclick={logout}>Cerrar sesión</button></li>
       {:else}
         <li><a href="/auth/login">Iniciar Sesión</a></li>
