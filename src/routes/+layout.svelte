@@ -179,7 +179,9 @@
       </div>
     </div>
 
-    {@render children()}
+    <main class="grow">
+      {@render children()}
+    </main>
 
     <footer
       class="footer sm:footer-horizontal bg-base-300 text-base-content p-10"
