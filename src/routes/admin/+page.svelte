@@ -17,7 +17,7 @@
     <!-- Products Card -->
     <a
       href="/admin/productos"
-      class="card bg-base-100 shadow-xl border border-base-200 hover:shadow-2xl transition-all hover:border-primary group"
+      class="card bg-base-300 shadow-xl border border-base-200 hover:shadow-2xl transition-all hover:border-primary group"
     >
       <div class="card-body flex flex-col h-full">
         <div class="flex items-center gap-4 mb-4">
@@ -33,7 +33,7 @@
           productos de la tienda.
         </p>
         <div class="card-actions justify-end mt-4">
-          <span class="btn btn-primary btn-sm">Gestionar</span>
+          <span class="btn btn-success btn-sm">Gestionar</span>
         </div>
       </div>
     </a>
@@ -41,7 +41,7 @@
     <!-- Categories Card -->
     <a
       href="/admin/categorias"
-      class="card bg-base-100 shadow-xl border border-base-200 hover:shadow-2xl transition-all hover:border-secondary group"
+      class="card bg-base-300 shadow-xl border border-base-200 hover:shadow-2xl transition-all hover:border-secondary group"
     >
       <div class="card-body flex flex-col h-full">
         <div class="flex items-center gap-4 mb-4">
@@ -57,7 +57,7 @@
           principales.
         </p>
         <div class="card-actions justify-end mt-4">
-          <span class="btn btn-secondary btn-sm">Gestionar</span>
+          <span class="btn btn-success btn-sm">Gestionar</span>
         </div>
       </div>
     </a>

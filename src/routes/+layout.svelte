@@ -10,6 +10,7 @@
   let isLoginPage = $derived(page.url.pathname === "/auth/login");
   let isRegisterPage = $derived(page.url.pathname === "/auth/registro");
   let isAuthPage = $derived(isLoginPage || isRegisterPage);
+  let isAdminPage = $derived(page.url.pathname.startsWith("/admin"));
 
   const logout = async () => {
     await data.supabase.auth.signOut();
@@ -59,65 +60,81 @@
       </div>
       {#if !isAuthPage}
         <div class="navbar-center hidden lg:flex">
-          <ul class="menu menu-horizontal px-1">
-            <li><a>Productos</a></li>
-            <li>
-              <details>
-                <summary>Categorías</summary>
-                <ul class="p-2 bg-base-100 w-40 z-1">
-                  <li><a>Procesadores</a></li>
-                  <li><a>Tarjetas Gráficas</a></li>
-                  <li><a>Placas Madre</a></li>
-                  <li><a>Memorias RAM</a></li>
-                  <li><a>Almacenamiento</a></li>
-                  <li><a>Fuentes de Poder</a></li>
-                  <li><a>Ver más</a></li>
-                </ul>
-              </details>
-            </li>
-            <li><a>Reparaciones y servicios</a></li>
-          </ul>
+          {#if isAdminPage}
+            <ul class="menu menu-horizontal px-1">
+              {#if page.url.pathname !== "/admin"}
+                <li><a href="/admin">Volver al panel admin</a></li>
+              {/if}
+              <li><a href="/admin/productos">Productos</a></li>
+              <li><a href="/admin/categorias">Categorías</a></li>
+            </ul>
+          {:else}
+            <ul class="menu menu-horizontal px-1">
+              <li><a>Productos</a></li>
+              <li>
+                <details>
+                  <summary>Categorías</summary>
+                  <ul class="p-2 bg-base-100 w-40 z-1">
+                    <li><a>Procesadores</a></li>
+                    <li><a>Tarjetas Gráficas</a></li>
+                    <li><a>Placas Madre</a></li>
+                    <li><a>Memorias RAM</a></li>
+                    <li><a>Almacenamiento</a></li>
+                    <li><a>Fuentes de Poder</a></li>
+                    <li><a>Ver más</a></li>
+                  </ul>
+                </details>
+              </li>
+              <li><a>Reparaciones y servicios</a></li>
+            </ul>
+          {/if}
         </div>
       {/if}
       <div class="navbar-end">
         <div class="flex-none gap-2">
           {#if data.session}
-            <div class="dropdown dropdown-end">
-              <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                <div class="indicator">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  <span class="badge badge-sm indicator-item">8</span>
-                </div>
-              </div>
-              <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-              <div
-                tabindex="0"
-                class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
-              >
-                <div class="card-body">
-                  <span class="text-lg font-bold">8 Productos</span>
-                  <span class="text-primary">Subtotal: $67</span>
-                  <div class="card-actions">
-                    <button class="btn btn-success btn-block"
-                      >Ver carrito</button
+            {#if !isAdminPage}
+              <div class="dropdown dropdown-end">
+                <div
+                  tabindex="0"
+                  role="button"
+                  class="btn btn-ghost btn-circle"
+                >
+                  <div class="indicator">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span class="badge badge-sm indicator-item">8</span>
+                  </div>
+                </div>
+                <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+                <div
+                  tabindex="0"
+                  class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
+                >
+                  <div class="card-body">
+                    <span class="text-lg font-bold">8 Productos</span>
+                    <span class="text-primary">Subtotal: $67</span>
+                    <div class="card-actions">
+                      <button class="btn btn-success btn-block"
+                        >Ver carrito</button
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            {/if}
             <div class="dropdown dropdown-end">
               <div
                 tabindex="0"
@@ -248,22 +265,34 @@
     <label for="main-drawer" aria-label="close sidebar" class="drawer-overlay"
     ></label>
     <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-      <li><a>Productos</a></li>
-      <li>
-        <details>
-          <summary>Categorías</summary>
-          <ul>
-            <li><a>Procesadores</a></li>
-            <li><a>Tarjetas Gráficas</a></li>
-            <li><a>Placas Madre</a></li>
-            <li><a>Memorias RAM</a></li>
-            <li><a>Almacenamiento</a></li>
-            <li><a>Fuentes de Poder</a></li>
-            <li><a>Ver más</a></li>
-          </ul>
-        </details>
-      </li>
-      <li><a>Reparaciones y servicios</a></li>
+      {#if isAdminPage}
+        <li><a href="/admin/productos">Productos</a></li>
+        <li><a href="/admin/categorias">Categorías</a></li>
+        {#if page.url.pathname !== "/admin"}
+          <li>
+            <a href="/admin" class="text-primary font-semibold"
+              >Volver al panel admin</a
+            >
+          </li>
+        {/if}
+      {:else}
+        <li><a>Productos</a></li>
+        <li>
+          <details>
+            <summary>Categorías</summary>
+            <ul>
+              <li><a>Procesadores</a></li>
+              <li><a>Tarjetas Gráficas</a></li>
+              <li><a>Placas Madre</a></li>
+              <li><a>Memorias RAM</a></li>
+              <li><a>Almacenamiento</a></li>
+              <li><a>Fuentes de Poder</a></li>
+              <li><a>Ver más</a></li>
+            </ul>
+          </details>
+        </li>
+        <li><a>Reparaciones y servicios</a></li>
+      {/if}
       {#if data.session}
         <li><a href="/profile">Perfil</a></li>
         {#if data.role === "admin"}
