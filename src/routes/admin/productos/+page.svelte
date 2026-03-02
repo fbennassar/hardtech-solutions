@@ -26,7 +26,7 @@
     <h1 class="text-3xl font-bold">
       Gestión de <span class="text-primary">Productos</span>
     </h1>
-    <a href="/admin/productos/crear" class="btn btn-primary">
+    <a href="/admin/productos/crear" class="btn btn-success">
       Nuevo Producto
     </a>
   </div>
@@ -57,7 +57,7 @@
   {/if}
 
   <div
-    class="overflow-x-auto bg-base-100 shadow-xl border border-base-200 rounded-box"
+    class="overflow-x-auto bg-base-300 shadow-xl border border-base-200 rounded-box"
   >
     <table class="table w-full">
       <thead>

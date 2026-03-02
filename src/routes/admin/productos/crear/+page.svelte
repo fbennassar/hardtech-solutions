@@ -65,7 +65,7 @@
     method="POST"
     action="?/create"
     enctype="multipart/form-data"
-    class="bg-base-100 p-6 rounded-box shadow-xl border border-base-200"
+    class="bg-base-300 p-6 rounded-box shadow-xl border border-base-200"
     use:enhance={() => {
       loading = true;
       return async ({ update }) => {
@@ -196,7 +196,7 @@
             accept="image/*"
             multiple
             disabled={loading}
-            class="file-input file-input-bordered file-input-primary w-full"
+            class="file-input file-input-bordered file-input-success w-full"
           />
           <label class="label" for="images">
             <span class="label-text-alt text-base-content/60"
@@ -263,7 +263,7 @@
       <a href="/admin/productos" class="btn" class:btn-disabled={loading}
         >Cancelar</a
       >
-      <button type="submit" class="btn btn-primary" disabled={loading}>
+      <button type="submit" class="btn btn-success" disabled={loading}>
         {#if loading}
           <span class="loading loading-spinner"></span>
         {/if}

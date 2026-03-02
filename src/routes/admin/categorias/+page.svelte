@@ -297,7 +297,7 @@
         >
           Cancelar
         </button>
-        <button type="submit" class="btn btn-primary" disabled={loading}>
+        <button type="submit" class="btn btn-success" disabled={loading}>
           {#if loading}
             <span class="loading loading-spinner"></span>
           {/if}
