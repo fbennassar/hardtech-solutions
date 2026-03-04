@@ -18,7 +18,7 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     },
   );
 
-  const { session, user, role } = data;
+  const { session, user, role, categories, cartCount, cartTotal } = data;
 
-  return { supabase, session, user, role };
+  return { supabase, session, user, role, categories, cartCount, cartTotal };
 };

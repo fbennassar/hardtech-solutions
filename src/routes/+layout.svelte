@@ -70,22 +70,25 @@
             </ul>
           {:else}
             <ul class="menu menu-horizontal px-1">
-              <li><a>Productos</a></li>
+              <li><a href="/productos">Productos</a></li>
               <li>
                 <details>
                   <summary>Categorías</summary>
                   <ul class="p-2 bg-base-100 w-40 z-1">
-                    <li><a>Procesadores</a></li>
-                    <li><a>Tarjetas Gráficas</a></li>
-                    <li><a>Placas Madre</a></li>
-                    <li><a>Memorias RAM</a></li>
-                    <li><a>Almacenamiento</a></li>
-                    <li><a>Fuentes de Poder</a></li>
-                    <li><a>Ver más</a></li>
+                    {#if data.categories.length === 0}
+                      <li>
+                        <span class="text-sm opacity-50">Sin categorías</span>
+                      </li>
+                    {:else}
+                      {#each data.categories as cat}
+                        <li><a href="/categorias/{cat.slug}">{cat.name}</a></li>
+                      {/each}
+                    {/if}
+                    <li><a href="/categorias">Ver más</a></li>
                   </ul>
                 </details>
               </li>
-              <li><a>Reparaciones y servicios</a></li>
+              <li><a href="/servicios">Reparaciones y servicios</a></li>
             </ul>
           {/if}
         </div>
@@ -115,7 +118,11 @@
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span class="badge badge-sm indicator-item">8</span>
+                    {#if data.cartCount > 0}
+                      <span class="badge badge-sm indicator-item"
+                        >{data.cartCount}</span
+                      >
+                    {/if}
                   </div>
                 </div>
                 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -124,11 +131,15 @@
                   class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
                 >
                   <div class="card-body">
-                    <span class="text-lg font-bold">8 Productos</span>
-                    <span class="text-primary">Subtotal: $67</span>
+                    <span class="text-lg font-bold"
+                      >{data.cartCount} Productos</span
+                    >
+                    <span class="text-primary"
+                      >Subtotal: ${data.cartTotal.toFixed(2)}</span
+                    >
                     <div class="card-actions">
-                      <button class="btn btn-success btn-block"
-                        >Ver carrito</button
+                      <a href="/carrito" class="btn btn-success btn-block"
+                        >Ver carrito</a
                       >
                     </div>
                   </div>
@@ -281,17 +292,20 @@
           <details>
             <summary>Categorías</summary>
             <ul>
-              <li><a>Procesadores</a></li>
-              <li><a>Tarjetas Gráficas</a></li>
-              <li><a>Placas Madre</a></li>
-              <li><a>Memorias RAM</a></li>
-              <li><a>Almacenamiento</a></li>
-              <li><a>Fuentes de Poder</a></li>
-              <li><a>Ver más</a></li>
+              {#if data.categories.length === 0}
+                <li>
+                  <span class="text-sm opacity-50 pl-4">Sin categorías</span>
+                </li>
+              {:else}
+                {#each data.categories as cat}
+                  <li><a href="/categorias/{cat.slug}">{cat.name}</a></li>
+                {/each}
+              {/if}
+              <li><a href="/categorias">Ver más</a></li>
             </ul>
           </details>
         </li>
-        <li><a>Reparaciones y servicios</a></li>
+        <li><a href="/servicios">Reparaciones y servicios</a></li>
       {/if}
       {#if data.session}
         <li><a href="/profile">Perfil</a></li>
