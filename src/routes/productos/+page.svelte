@@ -52,7 +52,7 @@
     <div class="flex overflow-x-auto gap-2 pb-4 mb-4 hide-scrollbar snap-x">
       <a
         href="/productos"
-        class="badge badge-primary badge-lg whitespace-nowrap snap-start shrink-0 font-semibold"
+        class="badge badge-success badge-lg whitespace-nowrap snap-start shrink-0 font-semibold"
       >
         Todos
       </a>
@@ -182,7 +182,7 @@
                 <input type="hidden" name="quantity" value="1" />
                 <button
                   type="submit"
-                  class="btn btn-primary btn-sm btn-circle"
+                  class="btn btn-success btn-sm btn-circle"
                   disabled={product.stock <= 0 ||
                     loadingProductId === product.id}
                   onclick={(e) => handleAddClick(e, product.stock, product.id)}

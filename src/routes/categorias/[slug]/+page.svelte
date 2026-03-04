@@ -160,7 +160,7 @@
                 <input type="hidden" name="quantity" value="1" />
                 <button
                   type="submit"
-                  class="btn btn-primary btn-sm btn-circle"
+                  class="btn btn-success btn-sm btn-circle"
                   disabled={product.stock <= 0 ||
                     loadingProductId === product.id}
                   onclick={(e) => handleAddClick(e, product.stock, product.id)}

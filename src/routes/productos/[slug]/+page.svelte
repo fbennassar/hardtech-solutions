@@ -268,7 +268,7 @@
             <!-- Submit Button -->
             <button
               type="submit"
-              class="btn btn-primary h-12 flex-1 sm:flex-none shadow-md"
+              class="btn btn-success h-12 flex-1 sm:flex-none shadow-md"
               disabled={data.product.stock <= 0 || isAddingToCart}
             >
               {#if isAddingToCart}
