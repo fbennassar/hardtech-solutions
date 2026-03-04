@@ -4,6 +4,7 @@
   import ThemeSwitcher from "$lib/components/ThemeSwitcher.svelte";
   import { page } from "$app/state";
   import { invalidate } from "$app/navigation";
+  import { themeState, initTheme } from "$lib/theme.svelte";
 
   let { data, children } = $props();
 
@@ -11,6 +12,10 @@
   let isRegisterPage = $derived(page.url.pathname === "/auth/registro");
   let isAuthPage = $derived(isLoginPage || isRegisterPage);
   let isAdminPage = $derived(page.url.pathname.startsWith("/admin"));
+
+  $effect(() => {
+    initTheme();
+  });
 
   const logout = async () => {
     await data.supabase.auth.signOut();
@@ -51,11 +56,14 @@
             </label>
           </div>
         {/if}
-        <a href="/" class="btn btn-ghost text-xl font-bold tracking-tight">
-          <span class="sm:hidden">HT<span class="text-primary">S</span></span>
-          <span class="hidden sm:inline"
-            >HardTech <span class="text-primary">Solutions</span></span
-          >
+        <a href="/" class="btn btn-ghost text-xl font-bold tracking-tight px-2">
+          <img
+            src={themeState.current === "daisymax"
+              ? "/modo_oscuro_logo.svg"
+              : "/modo_claro_logo.svg"}
+            alt="Logo"
+            class="h-20 w-auto object-contain"
+          />
         </a>
       </div>
       {#if !isAuthPage}
