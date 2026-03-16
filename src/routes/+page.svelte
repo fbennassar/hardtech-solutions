@@ -79,7 +79,7 @@
         <div
           class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-2"
         >
-          <button class="btn btn-success">Ver Catálogo</button>
+          <a href="/productos" class="btn btn-success">Ver Catálogo</a>
           <button
             class="btn btn-outline btn-success"
             on:click={scrollToBuscador}
@@ -157,24 +157,28 @@
         image={cpuImage}
         title="Procesadores"
         description="Potencia de cálculo bruta para multitarea y gaming."
+        link="/categorias/procesadores"
       />
       <!-- Gráficas -->
       <CategoryCard
         image={gpuImage}
         title="Tarjetas Gráficas"
         description="Rendimiento visual de última generación para juegos y diseño."
+        link="/categorias/tarjetas-graficas"
       />
       <!-- Periféricos -->
       <CategoryCard
         image={perifericoImage}
         title="Periféricos"
         description="Teclados, mouses y accesorios para completar tu setup ideal."
+        link="/productos"      
       />
       <!-- Almacenamiento -->
       <CategoryCard
         image={almacenamientoImage}
         title="Almacenamiento"
         description="Discos SSD, NVMe y HDD para que nunca te quedes sin espacio."
+        link="/categorias/almacenamiento"
       />
     </div>
   </div>
