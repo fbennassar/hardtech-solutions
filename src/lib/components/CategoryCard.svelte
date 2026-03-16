@@ -5,9 +5,10 @@
     image: string;
     title: string;
     description: string;
+    link: string; 
   }
 
-  let { image, title, description }: Props = $props();
+  let { image, title, description, link }: Props = $props();
 </script>
 
 <div
@@ -28,7 +29,7 @@
     </h3>
     <p>{description}</p>
     <div class="card-actions justify-end">
-      <button class="btn btn-success btn-sm">Ver más</button>
+      <a href={link} class="btn btn-success">Ver más</a>
     </div>
   </div>
 </div>
