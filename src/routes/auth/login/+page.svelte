@@ -38,13 +38,13 @@
 
 	<div class="form-control">
 		<label class="label" for="email">
-			<span class="label-text">Email</span>
+			<span class="label-text">Ingrese su Email</span>
 		</label>
 		<input
 			type="email"
 			name="email"
 			id="email"
-			placeholder="tu@email.com"
+			placeholder="ejemplo123@email.com"
 			class="input input-bordered"
 			value={form?.email ?? ''}
 			required
@@ -53,7 +53,7 @@
 
 	<div class="form-control">
 		<label class="label" for="password">
-			<span class="label-text">Contraseña</span>
+			<span class="label-text">Ingrese su contraseña</span>
 		</label>
 		<input
 			type="password"
