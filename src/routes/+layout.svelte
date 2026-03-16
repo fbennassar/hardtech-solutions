@@ -56,7 +56,7 @@
             </label>
           </div>
         {/if}
-        <a href="/" class="btn btn-ghost text-xl font-bold tracking-tight px-2">
+        <a href="/" class="btn btn-ghost hover:bg-transparent active:bg-transparent focus:bg-transparent no-animation outline-none focus:outline-none border-none text-xl font-bold tracking-tight px-2">
           <img
             src={themeState.current === "daisymax"
               ? "/modo_oscuro_logo.svg"
