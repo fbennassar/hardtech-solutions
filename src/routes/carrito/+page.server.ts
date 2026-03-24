@@ -134,4 +134,40 @@ export const actions: Actions = {
 
     return { success: true };
   },
+
+  checkout: async ({ request, locals: { safeGetSession, supabase } }) => {
+    const { session, user } = await safeGetSession();
+
+    if (!session || !user) {
+      return fail(401, { error: "No autorizado" });
+    }
+
+    const formData = await request.formData();
+    const paymentMethod = formData.get("paymentMethod") as string;
+
+    if (!paymentMethod) {
+      return fail(400, { error: "Debe seleccionar un método de pago." });
+    }
+
+    const { data: orderId, error: checkoutError } = await supabase.rpc(
+      "checkout",
+      {
+        p_user_id: user.id,
+        p_payment_method: paymentMethod,
+      },
+    );
+
+    if (checkoutError) {
+      console.error("Error from checkout RPC:", checkoutError);
+      return fail(500, {
+        error: "Lo sentimos, el pago no pudo ser procesado. Verifica si hay suficiente stock de los productos seleccionados y vuelve a intentarlo.",
+      });
+    }
+
+    return {
+      success: true,
+      message: "¡Excelente! Tu compra se ha realizado con éxito.",
+      orderId,
+    };
+  },
 };

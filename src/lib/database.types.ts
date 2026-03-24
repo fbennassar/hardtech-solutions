@@ -222,6 +222,7 @@ export type Database = {
           created_at: string | null
           id: string
           notes: string | null
+          payment_method: string | null
           shipping_address: string
           status: Database["public"]["Enums"]["order_status"] | null
           subtotal_amount: number
@@ -236,6 +237,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           notes?: string | null
+          payment_method?: string | null
           shipping_address: string
           status?: Database["public"]["Enums"]["order_status"] | null
           subtotal_amount?: number
@@ -250,6 +252,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           notes?: string | null
+          payment_method?: string | null
           shipping_address?: string
           status?: Database["public"]["Enums"]["order_status"] | null
           subtotal_amount?: number
@@ -404,6 +407,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      checkout: {
+        Args: { p_payment_method: string; p_user_id: string }
+        Returns: string
+      }
       complete_checkout: {
         Args: {
           p_billing_type: string
@@ -554,3 +561,4 @@ export const Constants = {
     },
   },
 } as const
+

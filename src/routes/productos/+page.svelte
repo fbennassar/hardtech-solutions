@@ -29,8 +29,6 @@
       e.preventDefault();
       return;
     }
-
-    loadingProductId = productId;
   }
 </script>
 
