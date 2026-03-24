@@ -27,6 +27,9 @@
   );
 
   let isLoading = $state<string | null>(null);
+  let isPaymentModalOpen = $state(false);
+  let selectedPaymentMethod = $state("transferencia");
+  let isCheckingOut = $state(false);
 </script>
 
 <svelte:head>
@@ -39,8 +42,17 @@
   </h1>
 
   {#if form?.error}
-    <div class="alert alert-error mb-6 shadow-sm">
-      <span>Error: {form.error}</span>
+    <div class="alert alert-error mb-8 shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      <span><strong class="font-bold">Error en el pago:</strong> {form.error}</span>
+    </div>
+  {/if}
+
+  {#if form?.success}
+    <div class="toast toast-end toast-bottom z-50">
+      <div class="alert alert-success shadow-lg">
+        <span>{form.message || "¡Compra realizada con éxito!"}</span>
+      </div>
     </div>
   {/if}
 
@@ -73,7 +85,7 @@
   {:else}
     <div class="flex flex-col lg:flex-row gap-8">
       <!-- Cart Items List -->
-      <div class="flex-grow space-y-4">
+      <div class="grow space-y-4">
         {#each cartItems as item (item.id)}
           {@const product = Array.isArray(item.products)
             ? item.products[0]
@@ -97,7 +109,7 @@
             </figure>
 
             <div
-              class="flex-grow flex flex-col justify-between w-full sm:w-auto text-center sm:text-left"
+              class="grow flex flex-col justify-between w-full sm:w-auto text-center sm:text-left"
             >
               <div>
                 <a
@@ -217,7 +229,7 @@
 
             <!-- Per item total -->
             <div
-              class="hidden sm:flex flex-col items-end justify-center ml-auto font-semibold min-w-[100px]"
+              class="hidden sm:flex flex-col items-end justify-center ml-auto font-semibold min-w-25"
             >
               <span class="text-sm text-base-content/60 mb-1">Total</span>
               {formatCurrency(productPrice * item.quantity)}
@@ -248,12 +260,17 @@
 
             <div class="flex justify-between items-center mb-6">
               <span class="font-bold text-lg">Subtotal</span>
-              <span class="font-bold text-xl text-primary"
+              <span class="font-bold text-xl text-success"
                 >{formatCurrency(subtotal)}</span
               >
             </div>
 
-            <button class="btn btn-primary w-full"> Proceder al Pago </button>
+            <button
+              class="btn btn-success w-full"
+              onclick={() => (isPaymentModalOpen = true)}
+            >
+              Proceder al Pago
+            </button>
             <a href="/productos" class="btn btn-ghost w-full mt-2 text-sm">
               Seguir comprando
             </a>
@@ -263,3 +280,145 @@
     </div>
   {/if}
 </div>
+
+<!-- Modal de Pasarela de Pago Segura -->
+<dialog
+  class="modal modal-bottom sm:modal-middle"
+  class:modal-open={isPaymentModalOpen}
+>
+  <div class="modal-box p-0 sm:max-w-md bg-base-100 overflow-hidden shadow-2xl">
+    <div class="bg-success p-6 text-success-content text-center">
+      <div class="flex justify-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 opacity-90"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+      </div>
+      <h3 class="font-bold text-2xl mb-1 mt-2">Pasarela de Pago Segura</h3>
+      <p class="text-sm font-medium opacity-90">
+        Total a pagar: <span class="text-xl ml-1 font-extrabold">{formatCurrency(subtotal)}</span>
+      </p>
+    </div>
+
+    <form
+      method="POST"
+      action="?/checkout"
+      class="p-6"
+      use:enhance={() => {
+        isCheckingOut = true;
+        return async ({ update, result }) => {
+          await update({ reset: false });
+          isCheckingOut = false;
+          // Si es éxito o falla, cerramos el modal para que pueda ver el toast/alerta
+          isPaymentModalOpen = false;
+        };
+      }}
+    >
+      <div class="mb-5">
+        <p class="text-base-content/70 text-xs font-bold mb-3 uppercase tracking-wider">
+          Selecciona tu método de pago
+        </p>
+        
+        <div class="space-y-3">
+          <!-- Pago Movil C2P -->
+          <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all hover:bg-base-200 {selectedPaymentMethod === 'pago_movil' ? 'border-success ring-1 ring-success bg-success/5' : 'border-base-300'}">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="pago_movil"
+              class="radio radio-success radio-sm"
+              bind:group={selectedPaymentMethod}
+            />
+            <div class="grow">
+              <span class="font-bold flex items-center gap-2">
+                Pago Móvil C2P
+                <!-- Bandera VZLA SVG Minimal -->
+                <span class="text-xs w-5 h-3.5 relative overflow-hidden inline-block rounded-sm shadow-sm" title="Venezuela">
+                  <span class="absolute top-0 w-full h-1/3 bg-[#FFCC00]"></span>
+                  <span class="absolute top-1/3 w-full h-1/3 bg-[#00247D]"></span>
+                  <span class="absolute bottom-0 w-full h-1/3 bg-[#CF142B]"></span>
+                </span>
+              </span>
+              <p class="text-xs text-base-content/60 mt-0.5">Aprobación instantánea con tu banco</p>
+            </div>
+          </label>
+
+          <!-- Tarjeta de Crédito/Débito -->
+          <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all hover:bg-base-200 {selectedPaymentMethod === 'tarjeta' ? 'border-success ring-1 ring-success bg-success/5' : 'border-base-300'}">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="tarjeta"
+              class="radio radio-success radio-sm"
+              bind:group={selectedPaymentMethod}
+            />
+            <div class="grow">
+              <span class="font-bold flex items-center gap-2">
+                Tarjeta Mastercard / Visa
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-blue-500"><circle cx="15.5" cy="12" r="4.5"/><circle cx="8.5" cy="12" r="4.5"/></svg>
+              </span>
+              <p class="text-xs text-base-content/60 mt-0.5">Paga de forma encriptada y segura</p>
+            </div>
+          </label>
+
+          <!-- Paypal -->
+          <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all hover:bg-base-200 {selectedPaymentMethod === 'paypal' ? 'border-success ring-1 ring-success bg-success/5' : 'border-base-300'}">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="paypal"
+              class="radio radio-success radio-sm"
+              bind:group={selectedPaymentMethod}
+            />
+            <div class="grow">
+              <span class="font-bold flex items-center gap-2">
+                PayPal
+                <span class="italic text-[#00457C] font-extrabold text-sm ml-1">Pay</span><span class="italic text-[#0079C1] font-extrabold text-sm">Pal</span>
+              </span>
+              <p class="text-xs text-base-content/60 mt-0.5">Protección integral al comprador</p>
+            </div>
+          </label>
+
+          <!-- Zelle -->
+          <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all hover:bg-base-200 {selectedPaymentMethod === 'zelle' ? 'border-success ring-1 ring-success bg-success/5' : 'border-base-300'}">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="zelle"
+              class="radio radio-success radio-sm"
+              bind:group={selectedPaymentMethod}
+            />
+            <div class="grow">
+              <span class="font-bold flex items-center gap-2">
+                Zelle
+                <span class="bg-[#753BBD] text-white px-1.5 py-0.5 rounded-sm font-extrabold text-[10px] tracking-wide ml-1">Zelle</span>
+              </span>
+              <p class="text-xs text-base-content/60 mt-0.5">Transferencias fluidas sin comisiones</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-action flex items-center justify-between mt-6 border-t border-base-200 pt-5">
+        <button
+          type="button"
+          class="btn btn-ghost hover:bg-base-200"
+          onclick={() => (isPaymentModalOpen = false)}
+          disabled={isCheckingOut}
+        >
+          Regresar
+        </button>
+        <button type="submit" class="btn btn-success px-8 shadow-md" disabled={isCheckingOut}>
+          {#if isCheckingOut}
+            <span class="loading loading-spinner"></span>
+            Procesando...
+          {:else}
+            Pagar {formatCurrency(subtotal)}
+          {/if}
+        </button>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop bg-base-300/70 backdrop-blur-[2px]">
+    <button onclick={() => (isPaymentModalOpen = false)} disabled={isCheckingOut}>
+      Cerrar
+    </button>
+  </form>
+</dialog>
