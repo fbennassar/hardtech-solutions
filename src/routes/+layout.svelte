@@ -172,10 +172,8 @@
                 class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <!-- svelte-ignore a11y_missing_attribute -->
-                  <a class="justify-between">
+                  <a href="/perfil" class="justify-between">
                     Perfil
-                    <span class="badge">Nuevo</span>
                   </a>
                 </li>
                 <!-- svelte-ignore a11y_missing_attribute -->
@@ -316,7 +314,7 @@
         <li><a href="/servicios">Reparaciones y servicios</a></li>
       {/if}
       {#if data.session}
-        <li><a href="/profile">Perfil</a></li>
+        <li><a href="/perfil">Perfil</a></li>
         {#if data.role === "admin"}
           <li>
             <a href="/admin" class="text-primary font-semibold">Panel Admin</a>
