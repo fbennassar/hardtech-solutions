@@ -13,8 +13,8 @@
     return new Intl.DateTimeFormat('es-VE', {
       timeZone: 'America/Caracas',
       year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+      month: 'short',
+      day: '2-digit',
       hour: '2-digit',
       minute: '2-digit'
     }).format(new Date(dateString));
@@ -191,7 +191,6 @@
 				<table class="table table-zebra w-full">
 					<thead class="bg-base-200 text-base-content">
 						<tr>
-							<th>Nº Orden</th>
 							<th>Fecha</th>
 							<th>Estado</th>
 							<th>Total</th>
@@ -201,7 +200,6 @@
 					<tbody>
 						{#each orders as order, index}
 							<tr>
-								<td class="font-mono text-sm">...{order.id.slice(-8)}</td>
 								<td>
 									<div class="flex items-center gap-2">
 										<Calendar class="w-4 h-4 text-base-content/50" />
@@ -233,7 +231,7 @@
 							<!-- Subtabla para los ítems de la orden seleccionada -->
 							{#if expandedOrderIndex === index}
 								<tr>
-									<td colspan="5" class="bg-base-200/50 p-0 border-b border-base-content/10">
+									<td colspan="4" class="bg-base-200/50 p-0 border-b border-base-content/10">
 										<div class="p-4">
 											<h4 class="text-sm font-semibold mb-3 flex items-center gap-2">
 												<ShoppingBag class="w-4 h-4" />
@@ -272,6 +270,14 @@
 															{/each}
 														{/if}
 													</tbody>
+													{#if order.total_amount}
+														<tfoot class="bg-base-200/30">
+															<tr>
+																<th colspan="3" class="text-right text-xs uppercase tracking-wider">Total de la Orden:</th>
+																<th class="text-right text-sm font-bold text-primary">${Number(order.total_amount).toFixed(2)}</th>
+															</tr>
+														</tfoot>
+													{/if}
 												</table>
 											</div>
 											
