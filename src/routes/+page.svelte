@@ -10,6 +10,16 @@
   import CategoryCard from "$lib/components/CategoryCard.svelte";
 
   let buscadorSection: HTMLElement;
+  let trackingInput = $state("");
+
+  import { goto } from '$app/navigation';
+
+  function handleRastrear(e: Event) {
+    e.preventDefault();
+    if (trackingInput.trim()) {
+      goto(`/reparaciones/${trackingInput.trim()}`);
+    }
+  }
 
   function scrollToBuscador() {
     buscadorSection?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -82,7 +92,7 @@
           <a href="/productos" class="btn btn-success">Ver Catálogo</a>
           <button
             class="btn btn-outline btn-success"
-            on:click={scrollToBuscador}
+            onclick={scrollToBuscador}
           >
             Rastrear Reparación
           </button>
@@ -125,12 +135,13 @@
       <h2 class="text-3xl font-bold">
         ¿Tienes un equipo en nuestro <span class="text-primary">taller</span>?
       </h2>
-      <div class="join w-full max-w-lg">
+      <form class="join w-full max-w-lg" onsubmit={handleRastrear}>
         <div class="relative w-full">
           <input
             id="buscador-orden"
             type="text"
-            placeholder="Ingresa tu número de orden"
+            bind:value={trackingInput}
+            placeholder="Ingresa tu código de guía (Ej: GF-8X4B)"
             class="input join-item input-bordered w-full pl-10 transition-all duration-300 focus:ring-4 focus:ring-primary/50"
           />
           <div
@@ -139,10 +150,10 @@
             <Search class="h-5 w-5 text-base-content/50" />
           </div>
         </div>
-        <button class="btn btn-success join-item hover:scale-105"
+        <button type="submit" class="btn btn-success join-item hover:scale-105"
           >Rastrear</button
         >
-      </div>
+      </form>
     </div>
   </div>
 

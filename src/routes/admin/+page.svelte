@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Package, Tags } from "lucide-svelte";
+  import { Package, Tags, Wrench } from "lucide-svelte";
   let { data } = $props();
 </script>
 
@@ -55,6 +55,29 @@
         <p class="text-base-content/70 grow">
           Organiza los productos de la tienda creando y editando las categorías
           principales.
+        </p>
+        <div class="card-actions justify-end mt-4">
+          <span class="btn btn-success btn-sm">Gestionar</span>
+        </div>
+      </div>
+    </a>
+    
+    <!-- Repairs Card -->
+    <a
+      href="/admin/reparaciones"
+      class="card bg-base-300 shadow-xl border border-base-200 hover:shadow-2xl transition-all hover:border-accent group"
+    >
+      <div class="card-body flex flex-col h-full">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="p-3 bg-accent/10 rounded-xl text-accent group-hover:bg-accent group-hover:text-accent-content transition-colors"
+          >
+            <Wrench class="h-8 w-8" />
+          </div>
+          <h2 class="card-title text-2xl">Reparaciones</h2>
+        </div>
+        <p class="text-base-content/70 grow">
+          Registra y actualiza el estado de las reparaciones de equipos de los clientes.
         </p>
         <div class="card-actions justify-end mt-4">
           <span class="btn btn-success btn-sm">Gestionar</span>
