@@ -4,6 +4,9 @@
 
   let { data, form } = $props<{ data: PageData; form: ActionData }>();
 
+  import { generateInvoice } from '$lib/utils/pdfGenerator';
+  import { FileText, CheckCircle2 } from 'lucide-svelte';
+
   function formatCurrency(amount: number) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -30,6 +33,36 @@
   let isPaymentModalOpen = $state(false);
   let selectedPaymentMethod = $state("transferencia");
   let isCheckingOut = $state(false);
+  let isGeneratingInvoice = $state(false);
+
+  async function downloadCurrentInvoice() {
+    if (!form?.orderId) return;
+    try {
+      isGeneratingInvoice = true;
+      const { data: userData } = await data.supabase.auth.getUser();
+      const user = userData.user;
+      if (!user) return;
+      
+      const { data: profile } = await data.supabase.from("users").select("id, full_name, email, phone, account_type").eq("id", user.id).single();
+      let company = null;
+      if (profile?.account_type === "business") {
+        const { data: companyData } = await data.supabase.from("companies").select("company_name, rif, address, business_phone").eq("user_id", user.id).single();
+        company = companyData;
+      }
+      const { data: order } = await data.supabase.from("orders").select(`
+        id, created_at, total_amount, payment_method,
+        order_items ( quantity, price_at_purchase, products ( name ) )
+      `).eq("id", form.orderId).single();
+      
+      if (profile && order) {
+        generateInvoice(order, profile, company);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      isGeneratingInvoice = false;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -49,14 +82,37 @@
   {/if}
 
   {#if form?.success}
-    <div class="toast toast-end toast-bottom z-50">
-      <div class="alert alert-success shadow-lg">
-        <span>{form.message || "¡Compra realizada con éxito!"}</span>
+    <div
+      class="text-center py-20 bg-base-200 rounded-box border border-success/30 max-w-2xl mx-auto shadow-lg"
+    >
+      <div class="bg-success text-success-content p-6 rounded-full inline-block mb-4 shadow-sm">
+        <CheckCircle2 class="w-16 h-16" />
+      </div>
+      <h3 class="text-3xl font-bold mb-4">{form.message || "¡Compra realizada con éxito!"}</h3>
+      <p class="text-base-content/70 mb-8 text-lg">
+        Tu pedido ha sido procesado correctamente. Gracias por confiar en HardTech Solutions.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <button 
+          class="btn btn-primary gap-2 hover:scale-105 transition-transform"
+          onclick={downloadCurrentInvoice}
+          disabled={isGeneratingInvoice}
+        >
+          {#if isGeneratingInvoice}
+            <span class="loading loading-spinner loading-sm"></span>
+            Generando...
+          {:else}
+            <FileText class="w-5 h-5" />
+            Descargar Factura
+          {/if}
+        </button>
+        <a href="/perfil" class="btn btn-outline btn-neutral">
+          Ir a mis compras
+        </a>
       </div>
     </div>
-  {/if}
-
-  {#if cartItems.length === 0}
+  {:else if cartItems.length === 0}
     <div
       class="text-center py-20 bg-base-200 rounded-box border border-base-300"
     >

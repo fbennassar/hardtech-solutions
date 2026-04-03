@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  import { ShoppingBag, User, Building2, MapPin, Phone, Mail, CreditCard, Calendar, ChevronDown, ChevronUp } from 'lucide-svelte';
+  import { ShoppingBag, User, Building2, MapPin, Phone, Mail, CreditCard, Calendar, ChevronDown, ChevronUp, Download } from 'lucide-svelte';
+  import { generateInvoice } from '$lib/utils/pdfGenerator';
 
   let { data }: { data: PageData } = $props();
 
@@ -233,10 +234,20 @@
 								<tr>
 									<td colspan="4" class="bg-base-200/50 p-0 border-b border-base-content/10">
 										<div class="p-4">
-											<h4 class="text-sm font-semibold mb-3 flex items-center gap-2">
-												<ShoppingBag class="w-4 h-4" />
-												Detalles de la Orden
-											</h4>
+											<div class="flex items-center justify-between mb-3">
+												<h4 class="text-sm font-semibold flex items-center gap-2">
+													<ShoppingBag class="w-4 h-4" />
+													Detalles de la Orden
+												</h4>
+												<button 
+													class="btn btn-xs btn-outline btn-primary gap-1"
+													onclick={() => profile && generateInvoice(order, profile, company)}
+													aria-label="Descargar Factura"
+												>
+													<Download class="w-3 h-3" />
+													Factura
+												</button>
+											</div>
 											
 											<div class="overflow-x-auto rounded-box border border-base-300">
 												<table class="table table-sm w-full bg-base-100">
