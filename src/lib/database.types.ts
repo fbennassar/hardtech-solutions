@@ -333,6 +333,63 @@ export type Database = {
           },
         ]
       }
+      repairs: {
+        Row: {
+          client_email: string | null
+          client_name: string
+          client_phone: string | null
+          created_at: string
+          device_type: string
+          diagnostico_date: string | null
+          en_progreso_date: string | null
+          id: string
+          issues: string
+          lista_retirar_date: string | null
+          retirada_date: string | null
+          status: Database["public"]["Enums"]["repair_status"]
+          total_cost: number
+          tracking_code: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          client_email?: string | null
+          client_name: string
+          client_phone?: string | null
+          created_at?: string
+          device_type: string
+          diagnostico_date?: string | null
+          en_progreso_date?: string | null
+          id?: string
+          issues: string
+          lista_retirar_date?: string | null
+          retirada_date?: string | null
+          status?: Database["public"]["Enums"]["repair_status"]
+          total_cost?: number
+          tracking_code: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          client_email?: string | null
+          client_name?: string
+          client_phone?: string | null
+          created_at?: string
+          device_type?: string
+          diagnostico_date?: string | null
+          en_progreso_date?: string | null
+          id?: string
+          issues?: string
+          lista_retirar_date?: string | null
+          retirada_date?: string | null
+          status?: Database["public"]["Enums"]["repair_status"]
+          total_cost?: number
+          tracking_code?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       tax_settings: {
         Row: {
           created_at: string
@@ -426,6 +483,11 @@ export type Database = {
       account_type: "personal" | "business"
       order_status: "pending" | "paid" | "shipped" | "delivered" | "cancelled"
       payment_status: "pending" | "completed" | "failed" | "refunded"
+      repair_status:
+        | "diagnostico"
+        | "en_progreso"
+        | "lista_retirar"
+        | "retirada"
       user_role: "client" | "admin" | "tech"
     }
     CompositeTypes: {
@@ -557,6 +619,12 @@ export const Constants = {
       account_type: ["personal", "business"],
       order_status: ["pending", "paid", "shipped", "delivered", "cancelled"],
       payment_status: ["pending", "completed", "failed", "refunded"],
+      repair_status: [
+        "diagnostico",
+        "en_progreso",
+        "lista_retirar",
+        "retirada",
+      ],
       user_role: ["client", "admin", "tech"],
     },
   },

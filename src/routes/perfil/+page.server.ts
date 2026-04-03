@@ -62,9 +62,21 @@ export const load: PageServerLoad = async ({
     console.error("Error fetching orders:", ordersError);
   }
 
+  // 4. Obtener las reparaciones del usuario
+  const { data: repairs, error: repairsError } = await supabase
+    .from("repairs")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (repairsError) {
+    console.error("Error fetching repairs:", repairsError);
+  }
+
   return {
     profile: userData,
     company: companyData,
     orders: orders || [],
+    repairs: repairs || [],
   };
 };

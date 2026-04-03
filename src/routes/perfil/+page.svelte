@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  import { ShoppingBag, User, Building2, MapPin, Phone, Mail, CreditCard, Calendar, ChevronDown, ChevronUp, Download } from 'lucide-svelte';
+  import { ShoppingBag, User, Building2, MapPin, Phone, Mail, CreditCard, Calendar, ChevronDown, ChevronUp, Download, Wrench, ExternalLink } from 'lucide-svelte';
   import { generateInvoice } from '$lib/utils/pdfGenerator';
 
   let { data }: { data: PageData } = $props();
@@ -8,6 +8,7 @@
   let profile = $derived(data.profile);
   let company = $derived(data.company);
   let orders = $derived(data.orders);
+  let repairs = $derived(data.repairs);
 
   // Formatear Fecha considerando Svelte 5 rune update
   const formatDate = (dateString: string) => {
@@ -47,6 +48,26 @@
 			shipped: 'badge-info',
 			delivered: 'badge-success',
 			cancelled: 'badge-error'
+		};
+		return colors[status] || 'badge-ghost';
+	};
+
+	const translateRepairStatus = (status: string) => {
+		const statuses: Record<string, string> = {
+			'diagnostico': 'Diagnóstico',
+			'en_progreso': 'En Progreso',
+			'lista_retirar': 'Lista para Retirar',
+			'retirada': 'Retirada'
+		};
+		return statuses[status] || status;
+	};
+	
+	const repairStatusColor = (status: string) => {
+		const colors: Record<string, string> = {
+			'diagnostico': 'badge-warning',
+			'en_progreso': 'badge-info',
+			'lista_retirar': 'badge-success',
+			'retirada': 'badge-ghost'
 		};
 		return colors[status] || 'badge-ghost';
 	};
@@ -303,6 +324,67 @@
 									</td>
 								</tr>
 							{/if}
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		{/if}
+	</div>
+
+	<!-- Mis Reparaciones -->
+	<h2 class="text-2xl font-bold mb-6 mt-12 flex items-center gap-2">
+		<Wrench class="w-6 h-6 text-success" />
+		Mis Reparaciones
+	</h2>
+
+	<div class="card bg-base-100 shadow-xl border border-base-200 overflow-hidden">
+		{#if !repairs || repairs.length === 0}
+			<div class="p-8 text-center text-base-content/70">
+				<Wrench class="w-12 h-12 mx-auto mb-4 opacity-50" />
+				<h3 class="text-lg font-semibold">No tienes reparaciones registradas</h3>
+				<p class="text-sm">Si dejas un equipo en nuestro taller, lo verás aquí.</p>
+			</div>
+		{:else}
+			<div class="overflow-x-auto">
+				<table class="table table-zebra w-full">
+					<thead class="bg-base-200 text-base-content">
+						<tr>
+							<th>Guía</th>
+							<th>Equipo</th>
+							<th>Estado</th>
+							<th>Fecha Ingreso</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each repairs as repair}
+							<tr>
+								<td>
+									<span class="font-mono text-sm tracking-wider font-bold text-accent">{repair.tracking_code}</span>
+								</td>
+								<td class="font-medium">{repair.device_type}</td>
+								<td>
+									<span class="badge {repairStatusColor(repair.status)} badge-sm">
+										{translateRepairStatus(repair.status)}
+									</span>
+								</td>
+								<td>
+									<div class="flex items-center gap-2">
+										<Calendar class="w-4 h-4 text-base-content/50" />
+										<span class="text-sm">{repair.created_at ? formatDate(repair.created_at) : 'N/A'}</span>
+									</div>
+								</td>
+								<td class="text-right">
+									<a 
+										href={`/reparaciones/${repair.tracking_code}`}
+										class="btn btn-sm btn-ghost gap-1"
+										aria-label="Ver estado detallado"
+									>
+										Seguimiento
+										<ExternalLink class="w-4 h-4" />
+									</a>
+								</td>
+							</tr>
 						{/each}
 					</tbody>
 				</table>
