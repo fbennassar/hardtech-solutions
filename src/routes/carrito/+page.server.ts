@@ -105,7 +105,7 @@ export const actions: Actions = {
       return fail(500, { error: "Error al actualizar la cantidad" });
     }
 
-    return { success: true };
+    return { updated: true };
   },
 
   removeItem: async ({ request, locals: { safeGetSession, supabase } }) => {
@@ -132,7 +132,7 @@ export const actions: Actions = {
       return fail(500, { error: "Error al eliminar el producto del carrito" });
     }
 
-    return { success: true };
+    return { removed: true };
   },
 
   checkout: async ({ request, locals: { safeGetSession, supabase } }) => {
@@ -166,6 +166,7 @@ export const actions: Actions = {
 
     return {
       success: true,
+      checkoutSuccess: true,
       message: "¡Excelente! Tu compra se ha realizado con éxito.",
       orderId,
     };

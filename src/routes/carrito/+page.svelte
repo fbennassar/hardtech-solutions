@@ -81,7 +81,7 @@
     </div>
   {/if}
 
-  {#if form?.success}
+  {#if form?.checkoutSuccess}
     <div
       class="text-center py-20 bg-base-200 rounded-box border border-success/30 max-w-2xl mx-auto shadow-lg"
     >
@@ -342,7 +342,7 @@
   class="modal modal-bottom sm:modal-middle"
   class:modal-open={isPaymentModalOpen}
 >
-  <div class="modal-box p-0 sm:max-w-md bg-base-100 overflow-hidden shadow-2xl">
+  <div class="modal-box p-0 sm:max-w-lg max-h-[90vh] bg-base-100 overflow-hidden shadow-2xl flex flex-col">
     <div class="bg-success p-6 text-success-content text-center">
       <div class="flex justify-center mb-3">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 opacity-90"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
@@ -356,7 +356,7 @@
     <form
       method="POST"
       action="?/checkout"
-      class="p-6"
+      class="p-6 flex flex-col flex-1 min-h-0"
       use:enhance={() => {
         isCheckingOut = true;
         return async ({ update, result }) => {
@@ -367,12 +367,30 @@
         };
       }}
     >
-      <div class="mb-5">
+      <div class="mb-5 flex-1 min-h-0 flex flex-col">
         <p class="text-base-content/70 text-xs font-bold mb-3 uppercase tracking-wider">
           Selecciona tu método de pago
         </p>
         
-        <div class="space-y-3">
+        <div class="space-y-3 flex-1 min-h-0 overflow-y-auto pr-1">
+          <!-- Transferencia Bancaria -->
+          <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all hover:bg-base-200 {selectedPaymentMethod === 'transferencia' ? 'border-success ring-1 ring-success bg-success/5' : 'border-base-300'}">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="transferencia"
+              class="radio radio-success radio-sm"
+              bind:group={selectedPaymentMethod}
+            />
+            <div class="grow">
+              <span class="font-bold flex items-center gap-2">
+                Transferencia Bancaria
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-success"><path d="M3 10h18"/><path d="M5 6h14"/><path d="M6 14h12"/><path d="M5 18h14"/></svg>
+              </span>
+              <p class="text-xs text-base-content/60 mt-0.5">Ideal si prefieres confirmar el pago por cuenta bancaria</p>
+            </div>
+          </label>
+
           <!-- Pago Movil C2P -->
           <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all hover:bg-base-200 {selectedPaymentMethod === 'pago_movil' ? 'border-success ring-1 ring-success bg-success/5' : 'border-base-300'}">
             <input
