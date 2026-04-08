@@ -178,7 +178,7 @@
         <div bind:this={messagesContainer} class="h-80 overflow-y-auto rounded-lg border border-base-300 p-3 space-y-3 bg-base-200/40">
           {#each messages as message}
             <div class={message.role === "user" ? "chat chat-end" : "chat chat-start"}>
-              <div class={message.role === "user" ? "chat-bubble chat-bubble-primary" : "chat-bubble"}>
+              <div class={message.role === "user" ? "chat-bubble chat-bubble-success" : "chat-bubble"}>
                 {message.text}
               </div>
             </div>
@@ -195,7 +195,7 @@
                       <div class="text-xs mt-1">${item.price.toFixed(2)} | Stock: {item.stock}</div>
                       {#if canAddToCart}
                         <button
-                          class="btn btn-xs btn-primary mt-2 w-fit"
+                          class="btn btn-xs btn-success mt-2 w-fit"
                           onclick={() => addToCart(item.id)}
                           disabled={cartLoadingByProductId[item.id]}
                         >
@@ -224,14 +224,14 @@
             onkeydown={handleKeydown}
             disabled={loading}
           ></textarea>
-          <button class="btn btn-primary join-item" onclick={sendMessage} disabled={loading || !input.trim()}>
+          <button class="btn btn-success join-item" onclick={sendMessage} disabled={loading || !input.trim()}>
             Enviar
           </button>
         </div>
       </div>
     </div>
   {:else}
-    <button class="btn btn-primary shadow-lg" onclick={() => (open = true)}>
+    <button class="btn btn-success shadow-lg" onclick={() => (open = true)}>
       Chat
     </button>
   {/if}

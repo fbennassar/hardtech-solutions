@@ -6,6 +6,7 @@
   import { page } from "$app/state";
   import { invalidate } from "$app/navigation";
   import { themeState, initTheme } from "$lib/theme.svelte";
+  import { User } from "lucide-svelte";
 
   let { data, children } = $props();
 
@@ -92,10 +93,8 @@
                       {#each data.categories as cat}
                         <li><a href="/categorias/{cat.slug}">{cat.name}</a></li>
                       {/each}
-                    {/if}
-                    <li><a href="/categorias">Ver más</a></li>
-                  </ul>
-                </details>
+                  {/if}
+                </ul>
               </li>
               <li><a href="/servicios">Reparaciones y servicios</a></li>
             </ul>
@@ -161,24 +160,19 @@
                 role="button"
                 class="btn btn-ghost btn-circle avatar"
               >
-                <div class="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
+                  <div class="w-10 rounded-full bg-base-300 flex items-center justify-center p-2">
+                    <User class="w-6 h-6" />
+                  </div>
                 </div>
-              </div>
               <ul
                 tabindex="-1"
-                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <li>
                   <a href="/perfil" class="justify-between">
                     Perfil
                   </a>
                 </li>
-                <!-- svelte-ignore a11y_missing_attribute -->
-                <li><a>Configuración</a></li>
                 {#if data.role === "admin"}
                   <li>
                     <a href="/admin" class="text-primary font-semibold"
@@ -312,7 +306,6 @@
                   <li><a href="/categorias/{cat.slug}">{cat.name}</a></li>
                 {/each}
               {/if}
-              <li><a href="/categorias">Ver más</a></li>
             </ul>
           </details>
         </li>
