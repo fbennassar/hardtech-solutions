@@ -227,15 +227,15 @@
     >
       <nav>
         <h6 class="footer-title">Servicios y planes</h6>
-        <a class="link link-hover">Productos</a>
-        <a class="link link-hover">Servicios</a>
-        <a class="link link-hover">Sponsors</a>
+        <a href="/productos" class="link link-hover">Productos</a>
+        <a href="/servicios" class="link link-hover">Servicios</a>
+        <a href="#" class="link link-hover">Sponsors</a>
       </nav>
       <nav>
         <h6 class="footer-title">Compañía</h6>
-        <a class="link link-hover">Sobre Nosotros</a>
-        <a class="link link-hover">Contacto</a>
-        <a class="link link-hover">Empleos</a>
+        <a href="/sobre-nosotros" class="link link-hover">Sobre Nosotros</a>
+        <a href="/contacto" class="link link-hover">Contacto</a>
+        <a href="/empleos" class="link link-hover">Empleos</a>
       </nav>
       <nav>
         <h6 class="footer-title">Social</h6>

@@ -95,7 +95,7 @@
       
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <button 
-          class="btn btn-primary gap-2 hover:scale-105 transition-transform"
+          class="btn btn-success gap-2 hover:scale-105 transition-transform"
           onclick={downloadCurrentInvoice}
           disabled={isGeneratingInvoice}
         >
@@ -136,7 +136,7 @@
       <p class="text-base-content/70 mb-6">
         Parece que aún no has agregado nada.
       </p>
-      <a href="/productos" class="btn btn-primary">Ver Productos</a>
+      <a href="/productos" class="btn btn-success">Ver Productos</a>
     </div>
   {:else}
     <div class="flex flex-col lg:flex-row gap-8">

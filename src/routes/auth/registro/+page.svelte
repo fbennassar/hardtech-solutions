@@ -217,7 +217,7 @@
         de iniciar sesión.
       </p>
       <div class="modal-action">
-        <a href="/auth/login" class="btn btn-primary">Ir a Iniciar Sesión</a>
+        <a href="/auth/login" class="btn btn-success">Ir a Iniciar Sesión</a>
       </div>
     </div>
     <div class="modal-backdrop bg-black/50"></div>
