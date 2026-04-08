@@ -206,7 +206,7 @@
 				<ShoppingBag class="w-12 h-12 mx-auto mb-4 opacity-50" />
 				<h3 class="text-lg font-semibold">No tienes compras registradas</h3>
 				<p class="text-sm">Cuando realices una compra en la tienda, aparecerá aquí.</p>
-				<a href="/productos" class="btn btn-primary mt-6">Ir a la tienda</a>
+				<a href="/productos" class="btn btn-success mt-6">Ir a la tienda</a>
 			</div>
 		{:else}
 			<div class="overflow-x-auto">
@@ -261,7 +261,7 @@
 													Detalles de la Orden
 												</h4>
 												<button 
-													class="btn btn-xs btn-outline btn-primary gap-1"
+													class="btn btn-xs btn-outline btn-success gap-1"
 													onclick={() => profile && generateInvoice(order, profile, company)}
 													aria-label="Descargar Factura"
 												>

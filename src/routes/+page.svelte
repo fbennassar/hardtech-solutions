@@ -1,18 +1,17 @@
 <script lang="ts">
   import "../app.css";
-  import { Search } from "lucide-svelte";
+  import { Search, MapPin, Clock, Wrench, ShieldCheck, Zap, Monitor, Laptop, Cpu, HardDrive, Mail } from "lucide-svelte";
   import heroVideo from "$lib/assets/home/loop.webm";
+  import laboratorioImage from "$lib/assets/home/laboratorio-tecnico.jpg";
   import cpuImage from "$lib/assets/home/CPU.webp";
   import gpuImage from "$lib/assets/home/GPU.webp";
   import perifericoImage from "$lib/assets/home/periferico.webp";
   import almacenamientoImage from "$lib/assets/home/almacenamiento.webp";
-  import B2BImage from "$lib/assets/home/B2B.webp";
   import CategoryCard from "$lib/components/CategoryCard.svelte";
+  import { goto } from '$app/navigation';
 
   let buscadorSection: HTMLElement;
   let trackingInput = $state("");
-
-  import { goto } from '$app/navigation';
 
   function handleRastrear(e: Event) {
     e.preventDefault();
@@ -25,20 +24,18 @@
     buscadorSection?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
-  // Lógica para animaciones al hacer scroll (Intersection Observer)
-
   function reveal(node: Element) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             node.classList.add("animate-enter");
-            observer.unobserve(node); // Solo anima una vez
+            observer.unobserve(node);
           }
         });
       },
       { threshold: 0.1 },
-    ); // Se activa cuando se ve el 10% del elemento
+    );
 
     observer.observe(node);
 
@@ -50,390 +47,268 @@
   }
 </script>
 
-<div class="flex flex-col gap-16 md:gap-24">
-  <!-- Hero Section -->
-  <div class="container mx-auto px-4 pt-12 md:pt-20 pb-8 md:pb-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
-      <!-- Left side (Video) -->
-      <div
-        class="hidden md:block w-full aspect-square md:aspect-4/5 lg:aspect-square relative rounded-4xl overflow-hidden bg-base-300 shadow-xl border border-base-200"
-      >
-        <video
-          class="absolute inset-0 h-full w-full object-cover scale-110"
-          autoplay
-          loop
-          muted
-          playsinline
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <!-- Soft gradient overlay to add depth without darkening too much -->
-        <div
-          class="absolute inset-0 bg-linear-to-tr from-base-200/40 to-transparent"
-        ></div>
-      </div>
+<svelte:head>
+  <title>HardTech Solutions | Expertos en Hardware y Reparaciones</title>
+  <meta name="description" content="Venta de componentes de PC y servicio técnico especializado en Maracaibo. Reparamos GPUs, Placas Base y más." />
+</svelte:head>
 
-      <!-- Right side (Content) -->
-      <div class="flex flex-col gap-6 text-center md:text-left">
-        <h1
-          class="text-5xl lg:text-7xl font-extrabold text-base-content leading-tight"
-        >
-          Potencia tu <span class="text-primary">Setup</span>,<br />
-          Repara tu <span class="text-primary">Equipo</span>
+<div class="flex flex-col gap-20 md:gap-32 overflow-hidden">
+  <!-- Hero Section Mejorada -->
+  <section class="relative min-h-[90vh] flex items-center pt-20 md:pt-0">
+    <div class="absolute inset-0 z-0">
+      <video
+        class="h-full w-full object-cover opacity-30 grayscale"
+        autoplay
+        loop
+        muted
+        playsinline
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </video>
+      <div class="absolute inset-0 bg-linear-to-b from-base-100/50 via-base-100 to-base-100"></div>
+    </div>
+
+    <div class="container mx-auto px-4 z-10 relative">
+      <div class="max-w-4xl">
+        <div use:reveal class="reveal-hidden inline-flex items-center gap-2 px-4 py-2 bg-success/10 border border-success/20 rounded-full text-success text-sm font-bold mb-8 uppercase tracking-widest">
+           <Zap class="w-4 h-4" /> El Taller No. 1 de Maracaibo
+        </div>
+        <h1 use:reveal class="reveal-hidden text-6xl md:text-8xl font-black text-base-content leading-[1.1] mb-8" style="transition-delay: 100ms">
+          Hardware Con <span class="text-transparent bg-clip-text bg-gradient-to-r from-success to-primary">Propósito.</span>
         </h1>
-        <p class="text-lg text-base-content/70 max-w-lg md:mx-0 mx-auto">
-          Los mejores componentes de PC y el servicio técnico más transparente
-          de la ciudad.
+        <p use:reveal class="reveal-hidden text-xl md:text-2xl text-base-content/60 max-w-2xl mb-12" style="transition-delay: 200ms">
+          Elevamos el rendimiento de tu PC con los mejores componentes y garantizamos su vida útil con nuestro servicio técnico especializado.
         </p>
 
-        <div
-          class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-2"
-        >
-          <a href="/productos" class="btn btn-success">Ver Catálogo</a>
+        <div use:reveal class="reveal-hidden flex flex-col sm:flex-row gap-6" style="transition-delay: 300ms">
+          <a href="/productos" class="btn btn-success btn-lg px-12 rounded-2xl shadow-xl shadow-success/20">
+            Explorar Catálogo
+          </a>
           <button
-            class="btn btn-outline btn-success"
             onclick={scrollToBuscador}
+            class="btn btn-outline btn-lg px-12 rounded-2xl border-2 hover:bg-base-content hover:text-base-100"
           >
-            Rastrear Reparación
+            Rastrear Equipo
           </button>
-        </div>
-
-        <div
-          class="flex gap-8 justify-center md:justify-start mt-4 pt-4 w-full"
-        >
-          <div class="flex flex-col">
-            <span class="text-3xl font-bold text-primary">500+</span>
-            <span class="text-sm text-base-content/60 font-medium"
-              >Productos</span
-            >
-          </div>
-          <div class="flex flex-col">
-            <span class="text-3xl font-bold text-primary">10K+</span>
-            <span class="text-sm text-base-content/60 font-medium"
-              >Clientes</span
-            >
-          </div>
-          <div class="flex flex-col">
-            <span class="text-3xl font-bold text-primary">99%</span>
-            <span class="text-sm text-base-content/60 font-medium"
-              >Satisfacción</span
-            >
-          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Buscador Rápido de Reparaciones -->
-  <div
-    bind:this={buscadorSection}
-    class="bg-base-200 py-16 sm:py-20 scroll-mt-20"
-  >
-    <div
-      class="container mx-auto flex flex-col items-center gap-6 px-4 text-center"
-    >
-      <h2 class="text-3xl font-bold">
-        ¿Tienes un equipo en nuestro <span class="text-primary">taller</span>?
-      </h2>
-      <form class="join w-full max-w-lg" onsubmit={handleRastrear}>
-        <div class="relative w-full">
-          <input
-            id="buscador-orden"
-            type="text"
-            bind:value={trackingInput}
-            placeholder="Ingresa tu código de guía (Ej: GF-8X4B)"
-            class="input join-item input-bordered w-full pl-10 transition-all duration-300 focus:ring-4 focus:ring-primary/50"
-          />
-          <div
-            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-          >
-            <Search class="h-5 w-5 text-base-content/50" />
-          </div>
+  <!-- Buscador de Reparaciones Glassmorphism -->
+  <section bind:this={buscadorSection} class="container mx-auto px-4 scroll-mt-32">
+    <div use:reveal class="reveal-hidden bg-base-200 border border-base-300 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-success/10 blur-3xl rounded-full -mr-20 -mt-20 group-hover:bg-success/20 transition-all duration-700"></div>
+      
+      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+        <div class="text-center md:text-left flex-1">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Estado del <span class="text-success">Taller</span></h2>
+          <p class="text-base-content/60 text-lg">Ingresa tu número de guía para conocer el progreso en tiempo real de tu reparación.</p>
         </div>
-        <button type="submit" class="btn btn-success join-item hover:scale-105"
-          >Rastrear</button
-        >
-      </form>
-    </div>
-  </div>
 
-  <!-- Categorías Destacadas -->
-  <div class="container mx-auto px-4">
-    <h2 class="mb-8 text-center text-3xl font-bold">
-      Categorías <span class="text-primary">Destacadas</span>
-    </h2>
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <!-- Procesadores -->
+        <form onsubmit={handleRastrear} class="w-full md:w-auto flex-1 max-w-lg relative">
+          <div class="join w-full shadow-lg">
+            <input
+              type="text"
+              bind:value={trackingInput}
+              placeholder="Ej: HT-9921"
+              class="input join-item input-bordered w-full h-16 bg-base-100 placeholder:opacity-40 font-mono tracking-widest text-lg"
+            />
+            <button type="submit" class="btn btn-success join-item h-16 px-8 text-lg">
+              <Search class="w-6 h-6" />
+            </button>
+          </div>
+          <div class="mt-4 flex gap-4 text-xs font-semibold opacity-40 justify-center md:justify-start">
+             <span>✓ Diagnóstico</span>
+             <span>✓ Reparación</span>
+             <span>✓ Entrega</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categorías de Componentes Grid Moderno -->
+  <section class="container mx-auto px-4 mb-10">
+    <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+      <div use:reveal class="reveal-hidden">
+        <h2 class="text-4xl font-bold mb-4">Todo lo que tu <span class="text-success">Setup</span> necesita</h2>
+        <p class="text-base-content/60 text-lg">Software, Hardware y Periféricos rigurosamente seleccionados.</p>
+      </div>
+      <a use:reveal href="/productos" class="reveal-hidden btn btn-ghost btn-sm group" style="transition-delay: 200ms">
+        Ver todas las categorías 
+        <Zap class="w-4 h-4 ml-2 group-hover:fill-success transition-all" />
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
       <CategoryCard
         image={cpuImage}
         title="Procesadores"
-        description="Potencia de cálculo bruta para multitarea y gaming."
+        description="El cerebro de tu máquina, directo desde Intel y AMD."
         link="/categorias/procesadores"
       />
-      <!-- Gráficas -->
       <CategoryCard
         image={gpuImage}
-        title="Tarjetas Gráficas"
-        description="Rendimiento visual de última generación para juegos y diseño."
+        title="Gráficas"
+        description="FPS máximos con la serie RTX y Radeon RX."
         link="/categorias/tarjetas-graficas"
       />
-      <!-- Periféricos -->
       <CategoryCard
         image={perifericoImage}
         title="Periféricos"
-        description="Teclados, mouses y accesorios para completar tu setup ideal."
+        description="Ecosistema completo: teclados, mouses y audífonos."
         link="/productos"      
       />
-      <!-- Almacenamiento -->
       <CategoryCard
         image={almacenamientoImage}
         title="Almacenamiento"
-        description="Discos SSD, NVMe y HDD para que nunca te quedes sin espacio."
+        description="Velocidades NVMe para cargas instantáneas."
         link="/categorias/almacenamiento"
       />
     </div>
-  </div>
+  </section>
 
-  <!-- Por qué elegirnos (Stats) -->
-  <div class="container mx-auto px-4 py-10">
-    <div class="stats stats-vertical w-full shadow-lg md:stats-horizontal">
-      <div class="stat">
-        <div class="stat-title">Equipos Reparados</div>
-        <div class="stat-value text-primary">1,200+</div>
-        <div class="stat-desc">Con la máxima satisfacción</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-title">Componentes Vendidos</div>
-        <div class="stat-value text-secondary">4,600+</div>
-        <div class="stat-desc">Las mejores marcas del mercado</div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-title">Garantía Asegurada</div>
-        <div class="stat-value">100%</div>
-        <div class="stat-desc">En todos nuestros servicios y productos</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Soluciones Empresariales (B2B) -->
-  <div use:reveal class="reveal-hidden bg-base-200 py-20">
+  <!-- Especialistas en Reparaciones (Reemplaza B2B) -->
+  <section class="bg-base-200 py-32 relative overflow-hidden">
     <div class="container mx-auto px-4">
-      <div class="text-center">
-        <h2 class="text-3xl font-bold">
-          Soluciones para tu <span class="text-primary">Empresa</span>
-        </h2>
-        <p class="mx-auto mt-4 max-w-2xl text-lg">
-          Mantenemos la infraestructura tecnológica de tu negocio funcionando a
-          la perfección.
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div use:reveal class="reveal-hidden">
+          <h2 class="text-5xl font-bold mb-8 leading-tight">Revivimos el hardware <br/> que otros dan por <span class="text-success">perdido.</span></h2>
+          <p class="text-xl text-base-content/70 mb-12">En HardTech Solutions contamos con laboratorios especializados para micro-soldadura y reparaciones de alta complejidad.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="flex gap-4">
+              <div class="bg-base-100 p-3 rounded-xl shadow-lg h-fit"><Cpu class="w-6 h-6 text-success" /></div>
+              <div>
+                <h4 class="font-bold mb-1">Reparación de GPUs</h4>
+                <p class="text-sm text-base-content/60">Reballing, cambio de VRAM y fases de poder.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="bg-base-100 p-3 rounded-xl shadow-lg h-fit"><HardDrive class="w-6 h-6 text-success" /></div>
+              <div>
+                <h4 class="font-bold mb-1">Placas Madre</h4>
+                <p class="text-sm text-base-content/60">Cortos circuitos, BIOS corruptas y puertos dañados.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="bg-base-100 p-3 rounded-xl shadow-lg h-fit"><Monitor class="w-6 h-6 text-success" /></div>
+              <div>
+                <h4 class="font-bold mb-1">Mantenimiento</h4>
+                <p class="text-sm text-base-content/60">Limpieza profunda y cambio de pasta térmica premium.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="bg-base-100 p-3 rounded-xl shadow-lg h-fit"><Laptop class="w-6 h-6 text-success" /></div>
+              <div>
+                <h4 class="font-bold mb-1">Laptops Gamer</h4>
+                <p class="text-sm text-base-content/60">Optimización de sistema y reparación de bisagras.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div use:reveal class="reveal-hidden relative" style="transition-delay: 200ms">
+           <div class="aspect-video bg-base-300 rounded-[2rem] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700">
+              <img src={laboratorioImage} alt="Laboratorio Técnico" class="w-full h-full object-cover" />
+           </div>
+           <div class="absolute -bottom-10 -left-10 bg-base-100 p-8 rounded-3xl shadow-2xl border border-base-300 hidden md:block">
+              <div class="flex items-center gap-4">
+                 <div class="text-3xl font-bold text-success">100%</div>
+                 <div class="text-xs uppercase font-black opacity-50">Tasa de <br/> Transparencia</div>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horarios y Ubicación (Reemplaza Ofertas) -->
+  <section class="container mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+      <!-- Card Ubicación Maracaibo -->
+      <div use:reveal class="reveal-hidden bg-base-100 border-[6px] border-success p-10 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+        <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-success/5 rounded-full"></div>
+        
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 bg-success/20 rounded-2xl flex items-center justify-center text-success">
+            <MapPin class="w-6 h-6" />
+          </div>
+          <h3 class="text-3xl font-extrabold uppercase tracking-tight">Estamos en <span class="text-success">Maracaibo</span></h3>
+        </div>
+        
+        <p class="text-xl text-base-content/70 leading-relaxed mb-10">
+          Nuestra sede principal se encuentra en el vibrante corazón de Maracaibo. Visítanos para asesoría técnica personalizada o recolección de equipos.
         </p>
-      </div>
-      <div class="mt-12 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-        <div class="order-2 md:order-1">
-          <ul class="flex flex-col gap-6">
-            <li class="flex items-start gap-4">
-              <div class="mt-1 shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-8 w-8 text-primary"
-                >
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold">Mantenimiento Preventivo</h3>
-                <p class="mt-1 text-base-content/80">
-                  Planes a medida para oficinas y locales comerciales,
-                  asegurando la continuidad de tu operación.
-                </p>
-              </div>
-            </li>
-            <li class="flex items-start gap-4">
-              <div class="mt-1 shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-8 w-8 text-primary"
-                >
-                  <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
-                  <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
-                  <line x1="6" x2="6.01" y1="6" y2="6" />
-                  <line x1="6" x2="6.01" y1="18" y2="18" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold">
-                  Montaje de Servidores y Redes
-                </h3>
-                <p class="mt-1 text-base-content/80">
-                  Instalación y configuración de servidores, racks y redes
-                  cableadas para un rendimiento óptimo.
-                </p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="order-1 md:order-2">
-          <img
-            src={B2BImage}
-            alt="Servicios para empresas"
-            class="rounded-lg shadow-2xl"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Ofertas Flash -->
-  <div class="container mx-auto px-4 py-20">
-    <div class="text-center">
-      <h2 class="text-3xl font-bold">
-        Ofertas <span class="text-primary">Flash</span>
-      </h2>
-      <p class="mx-auto mt-4 max-w-2xl text-lg">
-        Aprovecha nuestras promociones por tiempo limitado.
-      </p>
-    </div>
-    <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-      <!-- Card Oferta 1 -->
-      <div
-        use:reveal
-        class="reveal-hidden card image-full bg-linear-to-br from-primary to-accent text-primary-content shadow-xl"
-      >
-        <div class="card-body items-center justify-center text-center">
-          <h3 class="card-title text-3xl font-bold">¡Atención Estudiantes!</h3>
-          <p class="text-lg">
-            15% de descuento en servicios de reparación presentando tu
-            credencial.
-          </p>
-          <div class="card-actions mt-4">
-            <button
-              class="btn btn-outline border-white text-white hover:bg-white hover:text-accent"
-              >Saber más</button
-            >
+        
+        <div class="flex flex-col gap-4 text-lg font-bold">
+          <div class="flex items-center gap-3">
+            <div class="w-2 h-2 rounded-full bg-success"></div>
+            <span>Sector Indio Mara, Av. 15</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-2 h-2 rounded-full bg-success"></div>
+            <span>C.C. Metrosol, Nivel PB</span>
           </div>
         </div>
+
+        <div class="mt-12 flex flex-wrap gap-4 relative z-10">
+           <button class="btn btn-success rounded-xl">¿Cómo llegar?</button>
+           <button class="btn btn-ghost rounded-xl">Contactar Sede</button>
+        </div>
       </div>
-      <!-- Card Oferta 2 -->
-      <div
-        use:reveal
-        class="reveal-hidden card image-full bg-linear-to-tr from-accent to-primary text-primary-content shadow-xl"
-      >
-        <div class="card-body items-center justify-center text-center">
-          <h3 class="card-title text-3xl font-bold">
-            Upgrade y Limpieza Gratis
-          </h3>
-          <p class="text-lg">
-            Al comprar una nueva tarjeta gráfica o procesador, ¡la limpieza
-            interna de tu PC va por nuestra cuenta!
-          </p>
-          <div class="card-actions mt-4">
-            <button
-              class="btn btn-outline border-white text-white hover:bg-white hover:text-accent"
-              >Ver Componentes</button
-            >
+
+      <!-- Card Horarios -->
+      <div use:reveal class="reveal-hidden bg-base-200 p-10 md:p-12 rounded-[2.5rem] border border-base-300 flex flex-col justify-between" style="transition-delay: 200ms">
+        <div>
+          <div class="flex items-center gap-4 mb-10">
+            <div class="w-12 h-12 bg-base-100 rounded-2xl flex items-center justify-center text-primary shadow-md">
+              <Clock class="w-6 h-6" />
+            </div>
+            <h3 class="text-3xl font-bold">Horarios de Atención</h3>
           </div>
+
+          <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-3 bg-base-100 p-5 rounded-2xl shadow-sm border border-base-300/50">
+              <span class="font-bold text-lg">Lunes a Viernes</span>
+              <span class="badge badge-success badge-lg font-bold h-auto py-2 text-center">9:00 AM - 6:30 PM</span>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-3 bg-base-100 p-5 rounded-2xl shadow-sm border border-base-300/50">
+              <span class="font-bold text-lg">Sábados</span>
+              <span class="badge badge-outline badge-lg font-bold h-auto py-2 text-center">10:00 AM - 3:00 PM</span>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-3 opacity-40 p-5">
+              <span class="font-bold text-lg">Domingos</span>
+              <span class="text-lg font-bold">Cerrado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 p-6 bg-success/10 rounded-2xl border border-success/20 flex gap-4 items-center">
+           <ShieldCheck class="w-8 h-8 text-success" />
+           <p class="text-sm font-medium">Recepción de equipos garantizada durante todo nuestro horario laboral.</p>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Contacto / CTA Final -->
-  <div use:reveal class="reveal-hidden bg-base-200 py-20">
-    <div
-      class="container mx-auto flex flex-col items-center gap-8 px-4 text-center"
-    >
-      <h2 class="text-3xl font-bold">¿Listo para empezar?</h2>
-      <p class="max-w-xl text-lg">
-        Ponte en contacto con nosotros. Nuestro equipo está listo para ayudarte
-        con tus dudas y proyectos.
-      </p>
-      <div class="mt-4 flex flex-wrap justify-center gap-8">
-        <a
-          href="/"
-          class="flex flex-col items-center gap-2 transition-transform hover:scale-110"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-12 w-12 text-success"
-          >
-            <path
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-            />
-          </svg>
-          <span class="font-semibold">WhatsApp</span>
-        </a>
-        <a
-          href="/"
-          class="flex flex-col items-center gap-2 transition-transform hover:scale-110"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-12 w-12 text-info"
-          >
-            <rect width="20" height="16" x="2" y="4" rx="2" />
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-          </svg>
-          <span class="font-semibold">Email</span>
-        </a>
-        <a
-          href="/"
-          class="flex flex-col items-center gap-2 transition-transform hover:scale-110"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-12 w-12 text-error"
-          >
-            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
-          <span class="font-semibold">Ubicación</span>
-        </a>
-      </div>
-      <div class="mt-8">
-        <button class="btn btn-success btn-lg">Solicitar Cotización</button>
-      </div>
-    </div>
-  </div>
+  </section>
 </div>
+
+<style>
+  /* Optimizaciones de animaciones */
+  :global(.reveal-hidden) {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  :global(.animate-enter) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Efecto extra para el hero */
+  section video {
+    filter: brightness(0.7) contrast(1.1);
+  }
+</style>

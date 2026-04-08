@@ -264,7 +264,7 @@
       >
       <a href="/auth/login" class="btn btn-outline w-full sm:w-auto">Ingresar</a
       >
-      <a href="/auth/registro" class="btn btn-primary w-full sm:w-auto"
+      <a href="/auth/registro" class="btn btn-success w-full sm:w-auto"
         >Registrarse</a
       >
     </div>
