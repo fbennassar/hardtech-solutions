@@ -2,6 +2,7 @@
   import "../app.css";
   import favicon from "$lib/assets/favicon.svg";
   import ThemeSwitcher from "$lib/components/ThemeSwitcher.svelte";
+  import ChatWidget from "$lib/components/ChatWidget.svelte";
   import { page } from "$app/state";
   import { invalidate } from "$app/navigation";
   import { themeState, initTheme } from "$lib/theme.svelte";
@@ -216,6 +217,10 @@
     <main class="grow">
       {@render children()}
     </main>
+
+    {#if !isAdminPage}
+      <ChatWidget canAddToCart={Boolean(data.session)} />
+    {/if}
 
     <footer
       class="footer sm:footer-horizontal bg-base-300 text-base-content p-10"
