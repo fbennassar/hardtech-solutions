@@ -1,16 +1,15 @@
 import { createBrowserClient, isBrowser, parse } from "@supabase/ssr";
 import {
-  PUBLIC_SUPABASE_URL,
-  PUBLIC_SUPABASE_PB_KEY,
-} from "$env/static/public";
+  env
+} from "$env/dynamic/public";
 import type { LayoutLoad } from "./$types";
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
   depends("supabase:auth");
 
   const supabase = createBrowserClient(
-    PUBLIC_SUPABASE_URL,
-    PUBLIC_SUPABASE_PB_KEY,
+    env.PUBLIC_SUPABASE_URL,
+    env.PUBLIC_SUPABASE_PB_KEY,
     {
       global: {
         fetch,
